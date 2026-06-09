@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Golf Bingo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 16px;
+      background: #0b3b24;
+      color: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .pot-box {
+      background: #145c37;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+    .pot-box input {
+      width: 70px;
+      padding: 4px;
+      border-radius: 4px;
+      border: none;
+      margin-right: 4px;
+    }
+    .pot-value {
+      font-weight: bold;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .cell {
+      background: rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: 6px;
+      font-size: 11px;
+      text-align: center;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .cell.marked {
+      background: #2ecc71;
+      color: #062012;
+      font-weight: 600;
+    }
+    .buttons {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .primary {
+      background: #f1c40f;
+      color: #1b1b1b;
+    }
+    .secondary {
+      background: #ecf0f1;
+      color: #1b1b1b;
+    }
+    .status {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 14px;
+      min-height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Golf Bingo 🍀</h1>
+
+  <div class="pot-box">
+    <div><strong>Pot‑System (Variante B)</strong></div>
+    <div style="margin-top:4px;">
+      Spieler: <input type="number" id="players" min="1" value="4" />
+      Einsatz (€): <input type="number" id="stake" min="1" value="2" />
+      <button class="secondary" onclick="updatePot()">Pot berechnen</button>
+    </div>
+    <div style="margin-top:6px;">
+      Aktueller Pot: <span class="pot-value" id="potValue">8 €</span>
+    </div>
+    <div style="margin-top:4px; font-size:12px; opacity:0.9;">
+      Regel: Jeder zahlt den Einsatz in den Pot. Erster Bingo gewinnt den gesamten Pot.
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="buttons">
+    <button class="primary" onclick="claimBingo()">Bingo! 🍺</button>
+    <button class="secondary" onclick="resetBoard()">Neues Bingo</button>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <script>
+    const titles = [
+      "The Whisper", "The Escape Shot", "Safe Play", "Rabbit Hunter", "The Slice Deluxe",
+      "Triple‑Putt Shame", "Desert Stormer", "Speedster Fade", "Royal Driver", "The Smooth One",
+      "Artist’s Draw", "Bunker General", "Secret Satisfaction", "Lost in Flight", "Still You",
+      "Blind Landing", "Hook Kid", "Close Shave", "Ugly but Works", "Perfect Shot",
+      "Lip‑Out Legend", "Long & Straight", "Far Off Landing", "Short but Nasty", "Should’ve Used Driver"
+    ];
+
+    const size = 5;
+    let cells = [];
+
+    function shuffle(array) {
+      return array
+        .map(v => ({ v, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ v }) => v);
+    }
+
+    function buildGrid() {
+      const grid = document.getElementById("grid");
+      grid.innerHTML = "";
+      const shuffled = shuffle(titles);
+      cells = [];
+
+      for (let i = 0; i < size * size; i++) {
+        const div = document.createElement("div");
+        div.className = "cell";
+        div.textContent = shuffled[i];
+        div.dataset.index = i;
+        div.onclick = () => toggleCell(i, div);
+        grid.appendChild(div);
+        cells.push({ marked: false, el: div });
+      }
+      setStatus("");
+    }
+
+    function toggleCell(index, el) {
+      cells[index].marked = !cells[index].marked;
+      el.classList.toggle("marked", cells[index].marked);
+      if (checkBingo()) {
+        setStatus("BINGO! 🍺 Erster Bingo gewinnt den Pot.");
+      }
+    }
+
+    function checkBingo() {
+      const marked = i => cells[i].marked;
+
+      // Reihen
+      for (let r = 0; r < size; r++) {
+        let ok = true;
+        for (let c = 0; c < size; c++) {
+          if (!marked(r * size + c)) { ok = false; break; }
+        }
+        if (ok) return true;
+      }
+
+      // Spalten
+      for (let c = 0; c < size; c++) {
+        let ok = true;
+        for (let r = 0; r < size; r++) {
+          if (!marked(r * size + c)) { ok = false; break; }
+        }
+        if (ok) return true;
+      }
+
+      // Diagonalen
+      let ok1 = true, ok2 = true;
+      for (let i = 0; i < size; i++) {
+        if (!marked(i * size + i)) ok1 = false;
+        if (!marked(i * size + (size - 1 - i))) ok2 = false;
+      }
+      return ok1 || ok2;
+    }
+
+    function setStatus(msg) {
+      document.getElementById("status").textContent = msg;
+    }
+
+    function resetBoard() {
+      buildGrid();
+      setStatus("Neues Bingo gestartet. Pot bleibt bestehen.");
+    }
+
+    function updatePot() {
+      const players = parseInt(document.getElementById("players").value || "0", 10);
+      const stake = parseFloat(document.getElementById("stake").value || "0");
+      const pot = players * stake;
+      document.getElementById("potValue").textContent = pot.toFixed(2) + " €";
+      setStatus("Pot aktualisiert. Erster Bingo gewinnt " + pot.toFixed(2) + " €.");
+    }
+
+    function claimBingo() {
+      const potText = document.getElementById("potValue").textContent;
+      setStatus("BINGO! 🍺 Gewinner erhält den Pot: " + potText + ". Danach neuen Pot festlegen.");
+      // Optional: hier könnte man später Logging / History ergänzen
+    }
+
+    // PWA Service Worker registrieren (wenn vorhanden)
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js").catch(() => {});
+      });
+    }
+
+    // Initial
+    buildGrid();
+    updatePot();
+  </script>
+</body>
+</html>
