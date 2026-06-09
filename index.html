@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Golf Bingo</title>
@@ -89,34 +89,76 @@
     }
   </style>
 </head>
+
 <body>
   <h1>Golf Bingo 🍀</h1>
 
+  <!-- POT SYSTEM -->
   <div class="pot-box">
-    <div><strong>Pot‑System (Variante B)</strong></div>
+    <div><strong>Pot System (Variant B)</strong></div>
     <div style="margin-top:4px;">
-      Spieler: <input type="number" id="players" min="1" value="4" />
-      Einsatz (€): <input type="number" id="stake" min="1" value="2" />
-      <button class="secondary" onclick="updatePot()">Pot berechnen</button>
+      Players: <input type="number" id="players" min="1" value="4" />
+      Stake (€): <input type="number" id="stake" min="1" value="2" />
+      <button class="secondary" onclick="updatePot()">Update Pot</button>
     </div>
     <div style="margin-top:6px;">
-      Aktueller Pot: <span class="pot-value" id="potValue">8 €</span>
+      Current Pot: <span class="pot-value" id="potValue">8 €</span>
     </div>
     <div style="margin-top:4px; font-size:12px; opacity:0.9;">
-      Regel: Jeder zahlt den Einsatz in den Pot. Erster Bingo gewinnt den gesamten Pot.
+      Rule: Each player pays the stake into the pot. First Bingo wins the entire pot.
     </div>
   </div>
 
+  <!-- DESCRIPTIONS DROPDOWN -->
+  <div class="description-box" style="background:#145c37; padding:12px; border-radius:8px; margin-bottom:14px; font-size:13px;">
+    <button id="descToggle" style="width:100%; background:#ecf0f1; color:#1b1b1b; padding:10px; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer;">
+      Show Descriptions ▼
+    </button>
+
+    <div id="descContent" style="display:none; margin-top:10px;">
+      <ul style="padding-left:18px; line-height:1.4;">
+        <li>The Whisper – short but well placed</li>
+        <li>The Escape Shot – wild slice but still playable</li>
+        <li>Safe Play – conservative but effective</li>
+        <li>Rabbit Hunter – low runner</li>
+        <li>The Slice Deluxe – way off to the side</li>
+        <li>Triple‑Putt Shame – embarrassing but familiar</li>
+        <li>Desert Stormer – bunker to bunker</li>
+        <li>Speedster Fade – fast start, weak finish</li>
+        <li>Royal Driver – elegant but misguided</li>
+        <li>The Smooth One – surprisingly good</li>
+        <li>Artist’s Draw – beautiful curve</li>
+        <li>Bunker General – lands deep in the bunker</li>
+        <li>Secret Satisfaction – quiet but satisfying</li>
+        <li>Lost in Flight – great in the air, bad ending</li>
+        <li>Still You – still your turn</li>
+        <li>Blind Landing – nobody saw where it went</li>
+        <li>Hook Kid – classic hook</li>
+        <li>Close Shave – barely misses the hole</li>
+        <li>Ugly but Works – no beauty, but effective</li>
+        <li>Perfect Shot – clean and straight</li>
+        <li>Lip‑Out Legend – circles the cup</li>
+        <li>Long & Straight – exactly what it says</li>
+        <li>Far Off Landing – nowhere near the target</li>
+        <li>Short but Nasty – tricky short putt</li>
+        <li>Should’ve Used Driver – wrong club choice</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BINGO GRID -->
   <div class="grid" id="grid"></div>
 
+  <!-- BUTTONS -->
   <div class="buttons">
     <button class="primary" onclick="claimBingo()">Bingo! 🍺</button>
-    <button class="secondary" onclick="resetBoard()">Neues Bingo</button>
+    <button class="secondary" onclick="resetBoard()">New Bingo</button>
   </div>
 
   <div class="status" id="status"></div>
 
   <script>
+    // Bingo titles
     const titles = [
       "The Whisper", "The Escape Shot", "Safe Play", "Rabbit Hunter", "The Slice Deluxe",
       "Triple‑Putt Shame", "Desert Stormer", "Speedster Fade", "Royal Driver", "The Smooth One",
@@ -157,14 +199,14 @@
       cells[index].marked = !cells[index].marked;
       el.classList.toggle("marked", cells[index].marked);
       if (checkBingo()) {
-        setStatus("BINGO! 🍺 Erster Bingo gewinnt den Pot.");
+        setStatus("BINGO! 🍺 First Bingo wins the pot.");
       }
     }
 
     function checkBingo() {
       const marked = i => cells[i].marked;
 
-      // Reihen
+      // Rows
       for (let r = 0; r < size; r++) {
         let ok = true;
         for (let c = 0; c < size; c++) {
@@ -173,7 +215,7 @@
         if (ok) return true;
       }
 
-      // Spalten
+      // Columns
       for (let c = 0; c < size; c++) {
         let ok = true;
         for (let r = 0; r < size; r++) {
@@ -182,7 +224,7 @@
         if (ok) return true;
       }
 
-      // Diagonalen
+      // Diagonals
       let ok1 = true, ok2 = true;
       for (let i = 0; i < size; i++) {
         if (!marked(i * size + i)) ok1 = false;
@@ -197,7 +239,7 @@
 
     function resetBoard() {
       buildGrid();
-      setStatus("Neues Bingo gestartet. Pot bleibt bestehen.");
+      setStatus("New Bingo started. Pot remains unchanged.");
     }
 
     function updatePot() {
@@ -205,25 +247,34 @@
       const stake = parseFloat(document.getElementById("stake").value || "0");
       const pot = players * stake;
       document.getElementById("potValue").textContent = pot.toFixed(2) + " €";
-      setStatus("Pot aktualisiert. Erster Bingo gewinnt " + pot.toFixed(2) + " €.");
+      setStatus("Pot updated. First Bingo wins " + pot.toFixed(2) + " €.");
     }
 
     function claimBingo() {
       const potText = document.getElementById("potValue").textContent;
-      setStatus("BINGO! 🍺 Gewinner erhält den Pot: " + potText + ". Danach neuen Pot festlegen.");
-      // Optional: hier könnte man später Logging / History ergänzen
+      setStatus("BINGO! 🍺 Winner receives the pot: " + potText + ".");
     }
 
-    // PWA Service Worker registrieren (wenn vorhanden)
+    // Dropdown toggle
+    document.getElementById("descToggle").onclick = function () {
+      const content = document.getElementById("descContent");
+      const isOpen = content.style.display === "block";
+
+      content.style.display = isOpen ? "none" : "block";
+      this.textContent = isOpen ? "Show Descriptions ▼" : "Hide Descriptions ▲";
+    };
+
+    // Register service worker
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("service-worker.js").catch(() => {});
       });
     }
 
-    // Initial
+    // Initial load
     buildGrid();
     updatePot();
   </script>
+
 </body>
 </html>
