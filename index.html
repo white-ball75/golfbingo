@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Golf Bingo</title>
+  <title>Glen Cup Bingo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="manifest" href="manifest.json" />
 
@@ -14,9 +14,16 @@
       background: #0b3b24;
       color: #f5f5f5;
     }
+
+    /* TITLE WITH GOLF ICONS */
     h1 {
       text-align: center;
       margin-bottom: 8px;
+      font-size: 28px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
     }
 
     /* POT SYSTEM */
@@ -83,44 +90,59 @@
       min-height: 20px;
     }
 
-/* Bottom Sheet Overlay */
-.sheet-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-  z-index: 9998;
-}
-.sheet-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
+    /* RESET BUTTON */
+    .reset-box {
+      text-align:center;
+      margin-top:14px;
+    }
+    .reset-btn {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      background: #ecf0f1;
+      color: #1b1b1b;
+    }
 
-/* Bottom Sheet */
-.bottom-sheet {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 55vh; /* iOS-safe height */
-  background: #ffffff;
-  color: #000;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
-  transform: translateY(100%);
-  transition: transform 0.28s ease;
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  z-index: 9999;
-}
-.bottom-sheet.active {
-  transform: translateY(0%);
-}
+    /* BOTTOM SHEET OVERLAY */
+    .sheet-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 9998;
+    }
+    .sheet-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
+    /* BOTTOM SHEET */
+    .bottom-sheet {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 55vh;
+      background: #ffffff;
+      color: #000;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
+      transform: translateY(100%);
+      transition: transform 0.28s ease;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      z-index: 9999;
+    }
+    .bottom-sheet.active {
+      transform: translateY(0%);
+    }
 
     .sheet-handle {
       width: 40px;
@@ -165,7 +187,8 @@
 </head>
 
 <body>
-  <h1>Golf Bingo 🍀</h1>
+
+  <h1>⛳ Glen Cup Bingo 🏌️‍♂️</h1>
 
   <!-- POT SYSTEM -->
   <div class="pot-box">
@@ -173,7 +196,7 @@
     <div style="margin-top:4px;">
       Players: <input type="number" id="players" min="1" value="4" />
       Stake (€): <input type="number" id="stake" min="1" value="2" />
-      <button class="secondary" onclick="updatePot()">Update Pot</button>
+      <button class="reset-btn" onclick="updatePot()">Update Pot</button>
     </div>
     <div style="margin-top:6px;">
       Current Pot: <span class="pot-value" id="potValue">8 €</span>
@@ -185,9 +208,11 @@
 
   <!-- GRID -->
   <div class="grid" id="grid"></div>
-<div style="text-align:center; margin-top:14px;">
-  <button class="secondary" onclick="resetBoard()">Reset Bingo Grid</button>
-</div>
+
+  <!-- RESET BUTTON -->
+  <div class="reset-box">
+    <button class="reset-btn" onclick="resetBoard()">Reset Bingo Grid</button>
+  </div>
 
   <div class="status" id="status"></div>
 
@@ -348,41 +373,37 @@
       bingoActive = true;
       setStatus("BINGO! 🍺");
 
-      // Blink gold
       line.forEach(i => cells[i].el.classList.add("blink-gold"));
 
-      // Confetti
-      startConfetti();
+      if (!window.confettiLoaded) {
+        const script = document.createElement("script");
+        script.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js";
+        script.onload = () => {
+          window.confettiLoaded = true;
+          startConfettiEffect();
+        };
+        document.body.appendChild(script);
+      } else {
+        startConfettiEffect();
+      }
 
-      // Stop after 8 seconds
       setTimeout(() => {
-        stopConfetti();
         line.forEach(i => cells[i].el.classList.remove("blink-gold"));
       }, 8000);
     }
 
-    /* CONFETTI */
-    function startConfetti() {
-      const script = document.createElement("script");
-      script.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js";
-      script.onload = () => {
-        const duration = 8000;
-        const end = Date.now() + duration;
+    function startConfettiEffect() {
+      const duration = 8000;
+      const end = Date.now() + duration;
 
-        (function frame() {
-          confetti({
-            particleCount: 4,
-            spread: 70,
-            origin: { y: 0.6 }
-          });
-          if (Date.now() < end) requestAnimationFrame(frame);
-        })();
-      };
-      document.body.appendChild(script);
-    }
-
-    function stopConfetti() {
-      // Confetti auto-stops after duration
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
     }
 
     /* BOTTOM SHEET */
@@ -412,6 +433,14 @@
     }
 
     document.getElementById("sheetOverlay").onclick = closeSheet;
+
+    /* RESET BOARD */
+    function resetBoard() {
+      bingoActive = false;
+      cells.forEach(c => c.el.classList.remove("blink-gold"));
+      buildGrid();
+      setStatus("New Bingo started. Pot remains unchanged.");
+    }
 
     /* POT */
     function updatePot() {
