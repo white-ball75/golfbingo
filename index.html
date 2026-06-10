@@ -273,6 +273,11 @@
     let cells = [];
     let bingoActive = false;
 
+    /* STATUS HELPER */
+    function setStatus(msg) {
+      document.getElementById("status").textContent = msg;
+    }
+
     /* SHUFFLE */
     function shuffle(array) {
       return array
@@ -317,7 +322,7 @@
       if (bingoLine) triggerBingoEffects(bingoLine);
     }
 
-    /* CHECK BINGO */
+    /* CHECK BINGO (rows, columns, diagonals) */
     function checkBingo() {
       const marked = i => cells[i].marked;
 
