@@ -87,68 +87,6 @@
       font-size: 14px;
       min-height: 20px;
     }
-
-    /* Bottom Sheet */
-    .sheet-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.35);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-    .sheet-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .bottom-sheet {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: -60%;
-      height: 60%;
-      background: #ffffff;
-      color: #000;
-      border-top-left-radius: 16px;
-      border-top-right-radius: 16px;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
-      transition: transform 0.28s ease;
-      transform: translateY(100%);
-      display: flex;
-      flex-direction: column;
-      padding: 16px;
-    }
-    .bottom-sheet.active {
-      transform: translateY(0%);
-    }
-    .sheet-handle {
-      width: 40px;
-      height: 5px;
-      background: #ccc;
-      border-radius: 3px;
-      margin: 0 auto 12px auto;
-    }
-    .sheet-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .sheet-text {
-      font-size: 15px;
-      line-height: 1.4;
-      flex: 1;
-    }
-    .sheet-close {
-      margin-top: 16px;
-      padding: 10px;
-      background: #0b3b24;
-      color: #fff;
-      border-radius: 8px;
-      text-align: center;
-      font-weight: 600;
-      cursor: pointer;
-    }
   </style>
 </head>
 
@@ -157,7 +95,7 @@
 
   <!-- POT SYSTEM -->
   <div class="pot-box">
-    <div><strong>Pot System</strong></div>
+    <div><strong>Pot System (Variant B)</strong></div>
     <div style="margin-top:4px;">
       Players: <input type="number" id="players" min="1" value="4" />
       Stake (€): <input type="number" id="stake" min="1" value="2" />
@@ -168,6 +106,43 @@
     </div>
     <div style="margin-top:4px; font-size:12px; opacity:0.9;">
       Rule: Each player pays the stake into the pot. First Bingo wins the entire pot.
+    </div>
+  </div>
+
+  <!-- DESCRIPTIONS DROPDOWN -->
+  <div class="description-box" style="background:#145c37; padding:12px; border-radius:8px; margin-bottom:14px; font-size:13px;">
+    <button id="descToggle" style="width:100%; background:#ecf0f1; color:#1b1b1b; padding:10px; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer;">
+      Show Descriptions ▼
+    </button>
+
+    <div id="descContent" style="display:none; margin-top:10px;">
+      <ul style="padding-left:18px; line-height:1.4;">
+        <li>The Whisper – short but well placed</li>
+        <li>The Escape Shot – wild slice but still playable</li>
+        <li>Safe Play – conservative but effective</li>
+        <li>Rabbit Hunter – low runner</li>
+        <li>The Slice Deluxe – way off to the side</li>
+        <li>Triple‑Putt Shame – embarrassing but familiar</li>
+        <li>Desert Stormer – bunker to bunker</li>
+        <li>Speedster Fade – fast start, weak finish</li>
+        <li>Royal Driver – elegant but misguided</li>
+        <li>The Smooth One – surprisingly good</li>
+        <li>Artist’s Draw – beautiful curve</li>
+        <li>Bunker General – lands deep in the bunker</li>
+        <li>Secret Satisfaction – quiet but satisfying</li>
+        <li>Lost in Flight – great in the air, bad ending</li>
+        <li>Still You – still your turn</li>
+        <li>Blind Landing – nobody saw where it went</li>
+        <li>Hook Kid – classic hook</li>
+        <li>Close Shave – barely misses the hole</li>
+        <li>Ugly but Works – no beauty, but effective</li>
+        <li>Perfect Shot – clean and straight</li>
+        <li>Lip‑Out Legend – circles the cup</li>
+        <li>Long & Straight – exactly what it says</li>
+        <li>Far Off Landing – nowhere near the target</li>
+        <li>Short but Nasty – tricky short putt</li>
+        <li>Should’ve Used Driver – wrong club choice</li>
+      </ul>
     </div>
   </div>
 
@@ -182,18 +157,8 @@
 
   <div class="status" id="status"></div>
 
-  <!-- Bottom Sheet Overlay -->
-  <div id="sheetOverlay" class="sheet-overlay"></div>
-
-  <!-- Bottom Sheet -->
-  <div id="bottomSheet" class="bottom-sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-title" id="sheetTitle">Title</div>
-    <div class="sheet-text" id="sheetText">Description</div>
-    <div class="sheet-close" onclick="closeSheet()">Close</div>
-  </div>
-
   <script>
+    // Bingo titles
     const titles = [
       "The Whisper", "The Escape Shot", "Safe Play", "Rabbit Hunter", "The Slice Deluxe",
       "Triple‑Putt Shame", "Desert Stormer", "Speedster Fade", "Royal Driver", "The Smooth One",
@@ -201,34 +166,6 @@
       "Blind Landing", "Hook Kid", "Close Shave", "Ugly but Works", "Perfect Shot",
       "Lip‑Out Legend", "Long & Straight", "Far Off Landing", "Short but Nasty", "Should’ve Used Driver"
     ];
-
-    const descriptions = {
-      "The Whisper": "Short but well placed.",
-      "The Escape Shot": "Wild slice but still playable.",
-      "Safe Play": "Conservative but effective.",
-      "Rabbit Hunter": "Low runner.",
-      "The Slice Deluxe": "Way off to the side.",
-      "Triple‑Putt Shame": "Embarrassing but familiar.",
-      "Desert Stormer": "Bunker to bunker.",
-      "Speedster Fade": "Fast start, weak finish.",
-      "Royal Driver": "Elegant but misguided.",
-      "The Smooth One": "Surprisingly good.",
-      "Artist’s Draw": "Beautiful curve.",
-      "Bunker General": "Lands deep in the bunker.",
-      "Secret Satisfaction": "Quiet but satisfying.",
-      "Lost in Flight": "Great in the air, bad ending.",
-      "Still You": "Still your turn.",
-      "Blind Landing": "Nobody saw where it went.",
-      "Hook Kid": "Classic hook.",
-      "Close Shave": "Barely misses the hole.",
-      "Ugly but Works": "No beauty, but effective.",
-      "Perfect Shot": "Clean and straight.",
-      "Lip‑Out Legend": "Circles the cup.",
-      "Long & Straight": "Exactly what it says.",
-      "Far Off Landing": "Nowhere near the target.",
-      "Short but Nasty": "Tricky short putt.",
-      "Should’ve Used Driver": "Wrong club choice."
-    };
 
     const size = 5;
     let cells = [];
@@ -251,11 +188,49 @@
         div.className = "cell";
         div.textContent = shuffled[i];
         div.dataset.index = i;
-        div.onclick = () => openSheet(shuffled[i]);
+        div.onclick = () => toggleCell(i, div);
         grid.appendChild(div);
         cells.push({ marked: false, el: div });
       }
       setStatus("");
+    }
+
+    function toggleCell(index, el) {
+      cells[index].marked = !cells[index].marked;
+      el.classList.toggle("marked", cells[index].marked);
+      if (checkBingo()) {
+        setStatus("BINGO! 🍺 First Bingo wins the pot.");
+      }
+    }
+
+    function checkBingo() {
+      const marked = i => cells[i].marked;
+
+      // Rows
+      for (let r = 0; r < size; r++) {
+        let ok = true;
+        for (let c = 0; c < size; c++) {
+          if (!marked(r * size + c)) { ok = false; break; }
+        }
+        if (ok) return true;
+      }
+
+      // Columns
+      for (let c = 0; c < size; c++) {
+        let ok = true;
+        for (let r = 0; r < size; r++) {
+          if (!marked(r * size + c)) { ok = false; break; }
+        }
+        if (ok) return true;
+      }
+
+      // Diagonals
+      let ok1 = true, ok2 = true;
+      for (let i = 0; i < size; i++) {
+        if (!marked(i * size + i)) ok1 = false;
+        if (!marked(i * size + (size - 1 - i))) ok2 = false;
+      }
+      return ok1 || ok2;
     }
 
     function setStatus(msg) {
@@ -280,29 +255,23 @@
       setStatus("BINGO! 🍺 Winner receives the pot: " + potText + ".");
     }
 
-    /* Bottom Sheet Logic */
-    function openSheet(title) {
-      document.getElementById("sheetTitle").textContent = title;
-      document.getElementById("sheetText").textContent = descriptions[title];
+    // Dropdown toggle
+    document.getElementById("descToggle").onclick = function () {
+      const content = document.getElementById("descContent");
+      const isOpen = content.style.display === "block";
 
-      document.getElementById("sheetOverlay").classList.add("active");
-      document.getElementById("bottomSheet").classList.add("active");
-    }
+      content.style.display = isOpen ? "none" : "block";
+      this.textContent = isOpen ? "Show Descriptions ▼" : "Hide Descriptions ▲";
+    };
 
-    function closeSheet() {
-      document.getElementById("sheetOverlay").classList.remove("active");
-      document.getElementById("bottomSheet").classList.remove("active");
-    }
-
-    document.getElementById("sheetOverlay").onclick = closeSheet;
-
-    /* Service Worker */
+    // Register service worker
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("service-worker.js").catch(() => {});
       });
     }
 
+    // Initial load
     buildGrid();
     updatePot();
   </script>
