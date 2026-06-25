@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="manifest" href="manifest.json" />
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
   <style>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -183,135 +188,212 @@
       font-weight: 600;
       cursor: pointer;
     }
-/* Disable Bottom Sheet visually */
-.bottom-sheet,
-.sheet-overlay {
-  display: none !important;
-}
 
-    
+    /* Disable Bottom Sheet visually (can be re-enabled later) */
+    .bottom-sheet,
+    .sheet-overlay {
+      display: none !important;
+    }
+
+    /* Simple section styling */
+    .section-box {
+      background:#145c37;
+      padding:12px;
+      border-radius:8px;
+      margin-top:12px;
+      font-size:14px;
+    }
   </style>
 </head>
-
 <body>
 
   <h1>⛳ Glen Cup Bingo 🏌️‍♂️</h1>
-<div class="intro" style="margin-top:10px; margin-bottom:18px; text-align:center; line-height:1.4;">
-  <h2 style="margin:0; font-size:20px;">How to Play</h2>
-  <p style="margin-top:6px; font-size:14px;">
-    Glen Cup Bingo turns every golf round into a fun, competitive challenge.<br>
-    Tap a field whenever the described golf moment happens.<br>
-    Five marked fields in a row — horizontally, vertically or diagonally — score a Bingo and win the pot.
-  </p>
-</div>
-  <div class="pot-info" style="margin-top:12px; background:#145c37; padding:10px; border-radius:8px; font-size:14px;">
-  <h2 style="margin:0; font-size:18px;">About the Pot</h2>
-  <p style="margin-top:6px; line-height:1.4;">
-    Each player contributes the chosen stake into the pot.<br>
-    The first player to achieve a Bingo wins the entire amount.<br>
-    If multiple Bingos occur at the same time, you decide whether to split the pot or play a tiebreaker.
-  </p>
-</div>
+
+  <!-- Intro / How to Play -->
+  <div class="section-box" style="text-align:center; line-height:1.4;">
+    <h2 style="margin:0; font-size:20px;">How to Play</h2>
+    <p style="margin-top:6px; font-size:14px;">
+      Glen Cup Bingo turns every golf round into a fun, competitive challenge.<br>
+      Tap a field whenever the described golf moment happens.<br>
+      Five marked fields in a row — horizontally, vertically or diagonally — score a Bingo and win the pot.
+    </p>
+  </div>
+
+  <!-- Optional Login -->
+  <div id="loginBox" class="section-box">
+    <h2 style="margin:0; font-size:18px;">Player Login (optional)</h2>
+    <p style="margin-top:6px; font-size:13px;">
+      Log in with your email and nickname to join groups and track your Bingo rounds.
+    </p>
+    <input id="emailInput" type="email" placeholder="Email" style="width:100%; margin-top:8px; padding:6px;">
+    <input id="nicknameInput" type="text" placeholder="Nickname" style="width:100%; margin-top:8px; padding:6px;">
+    <button onclick="registerPlayer()" style="margin-top:10px; padding:8px 14px; border-radius:8px;">Register / Login</button>
+  </div>
+
+  <!-- Player Info + Active Group -->
+  <div id="playerInfo" class="section-box" style="display:none;">
+    <h2 style="margin:0; font-size:18px;">Player</h2>
+    <p style="margin-top:6px; font-size:14px;">
+      Nickname: <strong id="playerNickname"></strong><br>
+      Active Group: <strong id="playerGroup"></strong>
+    </p>
+  </div>
+
+  <!-- Group Management -->
+  <div id="groupBox" class="section-box" style="display:none;">
+    <h2 style="margin:0; font-size:18px;">Groups</h2>
+
+    <h3 style="margin-top:8px; font-size:16px;">Create Group</h3>
+    <input id="newGroupName" type="text" placeholder="New group name" style="width:100%; margin-top:6px; padding:6px;">
+    <button onclick="createGroup()" style="margin-top:8px; padding:8px 14px; border-radius:8px;">Create Group</button>
+
+    <h3 style="margin-top:16px; font-size:16px;">Join Group</h3>
+    <input id="joinGroupName" type="text" placeholder="Existing group name" style="width:100%; margin-top:6px; padding:6px;">
+    <button onclick="joinGroup()" style="margin-top:8px; padding:8px 14px; border-radius:8px;">Join Group</button>
+
+    <h3 style="margin-top:16px; font-size:16px;">Select Active Group</h3>
+    <select id="groupSelect" style="width:100%; margin-top:6px; padding:6px;" onchange="selectActiveGroup()">
+      <option value="">No group selected</option>
+    </select>
+  </div>
+
+  <!-- Pot System -->
+  <div class="pot-box">
+    <div><strong>Pot System (Variant B)</strong></div>
+    <div style="margin-top:4px;">
+      Players: <input type="number" id="players" min="1" value="4" />
+      Stake (€): <input type="number" id="stake" min="1" value="2" />
+      <button class="reset-btn" onclick="updatePot()">Update Pot</button>
+    </div>
     <div style="margin-top:6px;">
       Current Pot: <span class="pot-value" id="potValue">8 €</span>
     </div>
     <div style="margin-top:4px; font-size:12px; opacity:0.9;">
-      
-      Rule: Press the relevant button once you have or will hit the matching shot at golf.
-      
-      Each player pays the stake into the pot. First Bingo wins the entire pot.
-  
-
-       - by White Ball Marketing Agency -
+      Rule: Press the relevant button once you have or will hit the matching shot at golf.<br>
+      Each player pays the stake into the pot. First Bingo wins the entire pot.<br>
+      – by White Ball Marketing Agency –
     </div>
   </div>
 
-  <!-- GRID -->
-<div class="legend" style="margin-top:20px; background:#145c37; padding:12px; border-radius:8px;">
-  <h2 style="margin:0; font-size:18px;">Field Legend</h2>
-  <p style="margin-top:6px; font-size:14px; line-height:1.4;">
-    Each field represents a typical moment on the golf course. Here are a few examples:
-  </p>
-  <ul style="font-size:14px; margin-left:18px; line-height:1.5;">
-    <li><strong>The Whisper</strong> — A short but perfectly placed shot.</li>
-    <li><strong>Lost in Flight</strong> — Beautiful ball flight, disappointing landing.</li>
-    <li><strong>Triple‑Putt Shame</strong> — A putting adventure nobody wants to admit.</li>
-    <li><strong>Ugly but Works</strong> — Not pretty, but effective.</li>
-    <li><strong>Still You</strong> — When your shot didn’t go far enough to change turns.</li>
-  </ul>
-  <p style="font-size:13px; opacity:0.8;">(You can expand this list with all 25 fields.)</p>
-</div>
+  <!-- Grid -->
+  <div class="grid" id="grid"></div>
 
-  <!-- RESET BUTTON -->
+  <!-- Reset Button -->
   <div class="reset-box">
     <button class="reset-btn" onclick="resetBoard()">Reset Bingo Grid</button>
   </div>
 
+  <!-- Status -->
   <div class="status" id="status"></div>
 
-  <!-- Bottom Sheet Overlay -->
+  <!-- Bottom Sheet Overlay (currently disabled via CSS) -->
   <div id="sheetOverlay" class="sheet-overlay"></div>
 
-  <!-- Bottom Sheet -->
+  <!-- Bottom Sheet (currently disabled via CSS) -->
   <div id="bottomSheet" class="bottom-sheet">
     <div class="sheet-handle"></div>
-
     <div id="sheetContent" class="sheet-content-animate">
       <div class="sheet-title" id="sheetTitle">Title</div>
       <div class="sheet-text" id="sheetText">Description</div>
     </div>
-
     <div class="sheet-close" onclick="closeSheet()">Close</div>
   </div>
 
+  <!-- Legend -->
+  <div class="section-box">
+    <h2 style="margin:0; font-size:18px;">Field Legend</h2>
+    <p style="margin-top:6px; font-size:14px; line-height:1.4;">
+      Each field represents a typical moment on the golf course. Here are a few examples:
+    </p>
+    <ul style="font-size:14px; margin-left:18px; line-height:1.5;">
+      <li><strong>Long and strong down the middle-Drive</strong> — A perfect drive straight down the fairway.</li>
+      <li><strong>GIR Par 3</strong> — Green in regulation on a Par 3.</li>
+      <li><strong>3-Put</strong> — The putt nobody wanted.</li>
+      <li><strong>Slice Deluxe</strong> — A big curve away from the target.</li>
+      <li><strong>Ice on the ball - tee shot</strong> — A tee shot that feels absolutely pure.</li>
+    </ul>
+    <p style="font-size:13px; opacity:0.8;">(You can expand this list with all 25 fields.)</p>
+  </div>
+
+  <!-- Tips -->
+  <div class="section-box">
+    <h2 style="margin:0; font-size:18px;">Tips for a Great Bingo Round</h2>
+    <ul style="font-size:14px; margin-left:18px; line-height:1.5; margin-top:6px;">
+      <li>Keep an eye on your own shots and your playing partners.</li>
+      <li>Mark only real events — fairness keeps the game fun.</li>
+      <li>Enjoy the round and celebrate the funny moments.</li>
+      <li>Play at a steady pace to keep the game flowing.</li>
+      <li>Agree on pot rules before the round starts.</li>
+    </ul>
+  </div>
+
   <script>
-    /* TITLES + DESCRIPTIONS */
+    /* =========================
+       Firebase Setup
+       ========================= */
+
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    /* =========================
+       Bingo Fields
+       ========================= */
+
     const titles = [
       ">6 footer sunk", "3-Put", "Long and strong down the middle-Drive", "Sissy iron teee shot (Par 4/5 only)", "Slice Deluxe",
       "GIR Par 3", "GIR Par 4", "Par", "Bogey", "Birdie",
       "Double Par", "intentional draw", "intentional fade", "Pitch to < 4 m to pin", "Still me",
       "Chip to <1 Putter length to pin", "Sand save (1Put)", "Lady", "Hazenmaker", "shooter - green overhit",
-      "Lip‑Out Legend", "Should not have used driver", "Should have used driver", "lousy but usefull", "Ice on the ball - tee shot"
+      "Lip-Out Legend", "Should not have used driver", "Should have used driver",
+      "lousy but usefull", "Ice on the ball - tee shot"
     ];
 
     const descriptions = {
-      "The Whisper": "Short but well placed.",
-      "The Escape Shot": "Wild slice but still playable.",
-      "Safe Play": "Conservative but effective.",
-      "Rabbit Hunter": "Low runner.",
-      "The Slice Deluxe": "Way off to the side.",
-      "Triple‑Putt Shame": "Embarrassing but familiar.",
-      "Desert Stormer": "Bunker to bunker.",
-      "Speedster Fade": "Fast start, weak finish.",
-      "Royal Driver": "Elegant but misguided.",
-      "The Smooth One": "Surprisingly good.",
-      "Artist’s Draw": "Beautiful curve.",
-      "Bunker General": "Lands deep in the bunker.",
-      "Secret Satisfaction": "Quiet but satisfying.",
-      "Lost in Flight": "Great in the air, bad ending.",
-      "Still You": "Still your turn.",
-      "Blind Landing": "Nobody saw where it went.",
-      "Hook Kid": "Classic hook.",
-      "Close Shave": "Barely misses the hole.",
-      "Ugly but Works": "No beauty, but effective.",
-      "Perfect Shot": "Clean and straight.",
-      "Lip‑Out Legend": "Circles the cup.",
-      "Long & Straight": "Exactly what it says.",
-      "Far Off Landing": "Nowhere near the target.",
-      "Short but Nasty": "Tricky short putt.",
-      "Should’ve Used Driver": "Wrong club choice."
+      ">6 footer sunk": "A long putt successfully holed.",
+      "3-Put": "Three putts on a single green.",
+      "Long and strong down the middle-Drive": "A powerful drive straight down the fairway.",
+      "Sissy iron teee shot (Par 4/5 only)": "A cautious iron from the tee on a Par 4 or 5.",
+      "Slice Deluxe": "A big slice away from the target.",
+      "GIR Par 3": "Green in regulation on a Par 3.",
+      "GIR Par 4": "Green in regulation on a Par 4.",
+      "Par": "Hole completed in regulation.",
+      "Bogey": "One stroke over par.",
+      "Birdie": "One stroke under par.",
+      "Double Par": "Twice the par on a hole.",
+      "intentional draw": "A planned right-to-left shot.",
+      "intentional fade": "A planned left-to-right shot.",
+      "Pitch to < 4 m to pin": "Pitch shot finishing within 4 meters of the pin.",
+      "Still me": "Your shot didn’t change the order — still your turn.",
+      "Chip to <1 Putter length to pin": "Chip shot finishing within one putter length.",
+      "Sand save (1Put)": "Up-and-down from the bunker with one putt.",
+      "Lady": "Short tee shot, often joked about.",
+      "Hazenmaker": "A shot that barely clears trouble.",
+      "shooter - green overhit": "Approach shot that flies past the green.",
+      "Lip-Out Legend": "Putt that circles the cup and stays out.",
+      "Should not have used driver": "Driver choice that went wrong.",
+      "Should have used driver": "Too conservative club choice off the tee.",
+      "lousy but usefull": "Ugly shot, good result.",
+      "Ice on the ball - tee shot": "Perfectly struck tee shot."
     };
 
     const size = 5;
     let cells = [];
     let bingoActive = false;
 
-    /* STATUS HELPER */
     function setStatus(msg) {
       document.getElementById("status").textContent = msg;
     }
 
-    /* SHUFFLE */
     function shuffle(array) {
       return array
         .map(v => ({ v, sort: Math.random() }))
@@ -319,7 +401,6 @@
         .map(({ v }) => v);
     }
 
-    /* BUILD GRID */
     function buildGrid() {
       const grid = document.getElementById("grid");
       grid.innerHTML = "";
@@ -339,7 +420,6 @@
       setStatus("");
     }
 
-    /* HANDLE TAP */
     function handleCellTap(index, title) {
       if (bingoActive) {
         openSheet(title);
@@ -355,7 +435,6 @@
       if (bingoLine) triggerBingoEffects(bingoLine);
     }
 
-    /* CHECK BINGO (rows, columns, diagonals) */
     function checkBingo() {
       const marked = i => cells[i].marked;
 
@@ -406,7 +485,6 @@
       return null;
     }
 
-    /* BINGO EFFECTS */
     function triggerBingoEffects(line) {
       bingoActive = true;
       setStatus("BINGO! 🍺");
@@ -444,35 +522,20 @@
       })();
     }
 
-    /* BOTTOM SHEET */
+    /* Bottom Sheet (currently visually disabled) */
     function openSheet(title) {
+      const desc = descriptions[title] || "";
       document.getElementById("sheetTitle").textContent = title;
-      document.getElementById("sheetText").textContent = descriptions[title];
-
-      const overlay = document.getElementById("sheetOverlay");
-      const sheet = document.getElementById("bottomSheet");
-      const content = document.getElementById("sheetContent");
-
-      content.classList.remove("active");
-      overlay.classList.add("active");
-      sheet.classList.add("active");
-
-      setTimeout(() => content.classList.add("active"), 30);
+      document.getElementById("sheetText").textContent = desc;
+      // visually disabled via CSS; logic kept for future reactivation
     }
 
     function closeSheet() {
-      const overlay = document.getElementById("sheetOverlay");
-      const sheet = document.getElementById("bottomSheet");
-      const content = document.getElementById("sheetContent");
-
-      content.classList.remove("active");
-      overlay.classList.remove("active");
-      sheet.classList.remove("active");
+      // no-op while sheet is disabled
     }
 
     document.getElementById("sheetOverlay").onclick = closeSheet;
 
-    /* RESET BOARD */
     function resetBoard() {
       bingoActive = false;
       cells.forEach(c => c.el.classList.remove("blink-gold"));
@@ -480,7 +543,6 @@
       setStatus("New Bingo started. Pot remains unchanged.");
     }
 
-    /* POT */
     function updatePot() {
       const players = parseInt(document.getElementById("players").value || "0", 10);
       const stake = parseFloat(document.getElementById("stake").value || "0");
@@ -489,7 +551,131 @@
       setStatus("Pot updated. First Bingo wins " + pot.toFixed(2) + " €.");
     }
 
-    /* SERVICE WORKER */
+    /* =========================
+       Firebase Auth + Groups
+       ========================= */
+
+    async function registerPlayer() {
+      const email = document.getElementById("emailInput").value.trim();
+      const nickname = document.getElementById("nicknameInput").value.trim();
+
+      if (!email || !nickname) {
+        alert("Please enter email and nickname.");
+        return;
+      }
+
+      let userCredential;
+      const defaultPassword = "GlenCupDefaultPassword123"; // demo only
+
+      try {
+        userCredential = await auth.signInWithEmailAndPassword(email, defaultPassword);
+      } catch (e) {
+        userCredential = await auth.createUserWithEmailAndPassword(email, defaultPassword);
+        // send verification email
+        try {
+          await userCredential.user.sendEmailVerification();
+        } catch (err) {
+          console.log("Email verification error:", err);
+        }
+      }
+
+      const uid = userCredential.user.uid;
+
+      await db.collection("users").doc(uid).set({
+        email,
+        nickname,
+        groups: [],
+        activeGroup: ""
+      }, { merge: true });
+
+      document.getElementById("playerNickname").textContent = nickname;
+      document.getElementById("playerInfo").style.display = "block";
+      document.getElementById("loginBox").style.display = "none";
+      document.getElementById("groupBox").style.display = "block";
+
+      loadUserData(uid);
+    }
+
+    async function loadUserData(uid) {
+      const doc = await db.collection("users").doc(uid).get();
+      if (!doc.exists) return;
+      const data = doc.data();
+
+      document.getElementById("playerNickname").textContent = data.nickname || "";
+      document.getElementById("playerGroup").textContent = data.activeGroup || "";
+
+      const select = document.getElementById("groupSelect");
+      select.innerHTML = '<option value="">No group selected</option>';
+      (data.groups || []).forEach(g => {
+        const opt = document.createElement("option");
+        opt.value = g;
+        opt.textContent = g;
+        if (g === data.activeGroup) opt.selected = true;
+        select.appendChild(opt);
+      });
+    }
+
+    async function createGroup() {
+      const name = document.getElementById("newGroupName").value.trim();
+      const user = auth.currentUser;
+      if (!user || !name) return;
+
+      await db.collection("groups").doc(name).set({
+        name,
+        members: [user.uid]
+      }, { merge: true });
+
+      await db.collection("users").doc(user.uid).update({
+        groups: firebase.firestore.FieldValue.arrayUnion(name),
+        activeGroup: name
+      });
+
+      document.getElementById("playerGroup").textContent = name;
+      loadUserData(user.uid);
+    }
+
+    async function joinGroup() {
+      const name = document.getElementById("joinGroupName").value.trim();
+      const user = auth.currentUser;
+      if (!user || !name) return;
+
+      await db.collection("groups").doc(name).set({
+        name,
+        members: firebase.firestore.FieldValue.arrayUnion(user.uid)
+      }, { merge: true });
+
+      await db.collection("users").doc(user.uid).update({
+        groups: firebase.firestore.FieldValue.arrayUnion(name),
+        activeGroup: name
+      });
+
+      document.getElementById("playerGroup").textContent = name;
+      loadUserData(user.uid);
+    }
+
+    async function selectActiveGroup() {
+      const user = auth.currentUser;
+      if (!user) return;
+      const select = document.getElementById("groupSelect");
+      const groupName = select.value;
+
+      await db.collection("users").doc(user.uid).update({
+        activeGroup: groupName
+      });
+
+      document.getElementById("playerGroup").textContent = groupName || "";
+    }
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("playerInfo").style.display = "block";
+        document.getElementById("groupBox").style.display = "block";
+        loadUserData(user.uid);
+      }
+    });
+
+    /* Service Worker */
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("service-worker.js").catch(() => {});
@@ -499,15 +685,6 @@
     buildGrid();
     updatePot();
   </script>
-<div class="tips" style="margin-top:24px; background:#145c37; padding:12px; border-radius:8px;">
-  <h2 style="margin:0; font-size:18px;">Tips for a Great Bingo Round</h2>
-  <ul style="font-size:14px; margin-left:18px; line-height:1.5; margin-top:6px;">
-    <li>Keep an eye on your own shots and your playing partners.</li>
-    <li>Mark only real events — fairness keeps the game fun.</li>
-    <li>Enjoy the round and celebrate the funny moments.</li>
-    <li>Play at a steady pace to keep the game flowing.</li>
-    <li>Agree on pot rules before the round starts.</li>
-  </ul>
-</div>
+
 </body>
 </html>
