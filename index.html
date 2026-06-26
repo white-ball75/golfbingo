@@ -206,6 +206,19 @@
   </style>
 </head>
 <body>
+  
+<div id="debugPanel" style="
+  background:#222;
+  color:#0f0;
+  padding:10px;
+  font-family:monospace;
+  font-size:12px;
+  border-radius:8px;
+  margin-bottom:12px;
+  white-space:pre-line;
+">
+  DEBUG PANEL INITIALIZING...
+</div>
 
   <h1>⛳ Glen Cup Bingo 🏌️‍♂️</h1>
 
@@ -710,6 +723,63 @@ async function registerPlayer() {
 
     buildGrid();
     updatePot();
+
+/* =========================
+   DEBUG PANEL
+   ========================= */
+
+async function updateDebugPanel(message = "") {
+  const panel = document.getElementById("debugPanel");
+
+  let output = "[DEBUG]\n";
+
+  // Firebase check
+  try {
+    output += "Firebase: CONNECTED\n";
+  } catch (e) {
+    output += "Firebase: ERROR\n";
+  }
+
+  // Auth check
+  const user = auth.currentUser;
+  if (user) {
+    output += "Auth User: uid=" + user.uid + ", email=" + user.email + "\n";
+  } else {
+    output += "Auth User: none\n";
+  }
+
+  // Firestore user doc check
+  if (user) {
+    try {
+      const doc = await db.collection("users").doc(user.uid).get();
+      if (doc.exists) {
+        output += "Firestore User Doc: FOUND\n";
+        const data = doc.data();
+        output += "Nickname: " + (data.nickname || "missing") + "\n";
+        output += "Active Group: " + (data.activeGroup || "none") + "\n";
+        output += "Groups: " + JSON.stringify(data.groups || []) + "\n";
+      } else {
+        output += "Firestore User Doc: MISSING\n";
+      }
+    } catch (err) {
+      output += "Firestore User Doc: ERROR (" + err.message + ")\n";
+    }
+  }
+
+  // Optional message
+  if (message) {
+    output += "\nMessage: " + message + "\n";
+  }
+
+  panel.textContent = output;
+}
+
+// Update every 1.5 seconds
+setInterval(updateDebugPanel, 1500);
+
+
+
+    
   </script>
 
 </body>
