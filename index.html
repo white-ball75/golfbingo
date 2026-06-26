@@ -667,14 +667,34 @@ const db = firebase.firestore();
       document.getElementById("playerGroup").textContent = groupName || "";
     }
 
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        document.getElementById("loginBox").style.display = "none";
-        document.getElementById("playerInfo").style.display = "block";
-        document.getElementById("groupBox").style.display = "block";
-        loadUserData(user.uid);
-      }
-    });
+    aauth.onAuthStateChanged(async user => {
+  if (!user) {
+    // Kein User eingeloggt → Login anzeigen
+    document.getElementById("loginBox").style.display = "block";
+    document.getElementById("playerInfo").style.display = "none";
+    document.getElementById("groupBox").style.display = "none";
+    return;
+  }
+
+  // User eingeloggt → prüfen, ob Firestore-Daten existieren
+  const doc = await db.collection("users").doc(user.uid).get();
+
+  if (!doc.exists) {
+    // User ist eingeloggt, aber Firestore-Daten fehlen → Login anzeigen
+    document.getElementById("loginBox").style.display = "block";
+    document.getElementById("playerInfo").style.display = "none";
+    document.getElementById("groupBox").style.display = "none";
+    return;
+  }
+
+  // Firestore-Daten vorhanden → UI anzeigen
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("playerInfo").style.display = "block";
+  document.getElementById("groupBox").style.display = "block";
+
+  loadUserData(user.uid);
+});
+
 
     /* Service Worker */
     if ("serviceWorker" in navigator) {
