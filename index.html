@@ -556,46 +556,51 @@ const db = firebase.firestore();
        Firebase Auth + Groups
        ========================= */
 
-    async function registerPlayer() {
-      const email = document.getElementById("emailInput").value.trim();
-      const nickname = document.getElementById("nicknameInput").value.trim();
+async function registerPlayer() {
+  const email = document.getElementById("emailInput").value.trim();
+  const nickname = document.getElementById("nicknameInput").value.trim();
 
-      if (!email || !nickname) {
-        alert("Please enter email and nickname.");
-        return;
-      }
+  if (!email || !nickname) {
+    alert("Please enter email and nickname.");
+    return;
+  }
 
-      let userCredential;
-      const defaultPassword = "GlenCupDefaultPassword123"; // demo only
+  const defaultPassword = "GlenCupDefaultPassword123";
 
-      try {
-        userCredential = await auth.signInWithEmailAndPassword(email, defaultPassword);
-      } catch (e) {
-        userCredential = await auth.createUserWithEmailAndPassword(email, defaultPassword);
-        // send verification email
-        try {
-          await userCredential.user.sendEmailVerification();
-        } catch (err) {
-          console.log("Email verification error:", err);
-        }
-      }
+  let userCredential;
 
-      const uid = userCredential.user.uid;
+  try {
+    userCredential = await auth.signInWithEmailAndPassword(email, defaultPassword);
+  } catch (e) {
+    userCredential = await auth.createUserWithEmailAndPassword(email, defaultPassword);
 
-      await db.collection("users").doc(uid).set({
-        email,
-        nickname,
-        groups: [],
-        activeGroup: ""
-      }, { merge: true });
-
-      document.getElementById("playerNickname").textContent = nickname;
-      document.getElementById("playerInfo").style.display = "block";
-      document.getElementById("loginBox").style.display = "none";
-      document.getElementById("groupBox").style.display = "block";
-
-      loadUserData(uid);
+    // E-Mail Verification senden
+    try {
+      await userCredential.user.sendEmailVerification();
+    } catch (err) {
+      console.log("Email verification error:", err);
     }
+  }
+
+  const uid = userCredential.user.uid;
+
+  // Firestore-Daten IMMER anlegen
+  await db.collection("users").doc(uid).set({
+    email,
+    nickname,
+    groups: [],
+    activeGroup: ""
+  }, { merge: true });
+
+  // UI aktualisieren
+  document.getElementById("playerNickname").textContent = nickname;
+  document.getElementById("playerInfo").style.display = "block";
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("groupBox").style.display = "block";
+
+  loadUserData(uid);
+}
+
 
     async function loadUserData(uid) {
       const doc = await db.collection("users").doc(uid).get();
