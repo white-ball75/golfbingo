@@ -6,154 +6,154 @@
 <title>Golf Bingo</title>
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f5f5f5;
-        margin: 0;
-        padding: 0;
-        text-align: center;
-    }
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
 
-    h1 {
-        margin-top: 20px;
-        font-size: 28px;
-    }
+h1 {
+  margin-top: 20px;
+  font-size: 28px;
+}
 
-    /* Login Box */
-    #loginBox {
-        margin: 20px auto;
-        padding: 20px;
-        width: 300px;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
+/* Login Box */
+#loginBox {
+  margin: 20px auto;
+  padding: 20px;
+  width: 300px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
 
-    #loginBox input {
-        width: 90%;
-        padding: 10px;
-        margin: 8px 0;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-    }
+#loginBox input {
+  width: 90%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
 
-    #loginBox button {
-        width: 95%;
-        padding: 10px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-    }
+#loginBox button {
+  width: 95%;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-    /* Player Info */
-    #playerInfo {
-        margin-top: 20px;
-        font-size: 18px;
-        display: none;
-    }
+/* Player Info */
+#playerInfo {
+  margin-top: 20px;
+  font-size: 18px;
+  display: none;
+}
 
-    /* Group Box */
-    #groupBox {
-        margin: 20px auto;
-        padding: 20px;
-        width: 300px;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        display: none;
-    }
+/* Group Box */
+#groupBox {
+  margin: 20px auto;
+  padding: 20px;
+  width: 300px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  display: none;
+}
 
-    #groupBox input {
-        width: 90%;
-        padding: 10px;
-        margin: 8px 0;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-    }
+#groupBox input {
+  width: 90%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
 
-    #groupBox button {
-        width: 95%;
-        padding: 10px;
-        background: #28a745;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-    }
+#groupBox button {
+  width: 95%;
+  padding: 10px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-    /* Bingo Grid */
-    #bingoGrid {
-        margin: 20px auto;
-        width: 90%;
-        max-width: 600px;
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 8px;
-    }
+/* Bingo Grid */
+#bingoGrid {
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
 
-    .bingoCell {
-        background: white;
-        padding: 15px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        cursor: pointer;
-        font-size: 14px;
-    }
+.bingoCell {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 14px;
+}
 
-    .bingoCell.active {
-        background: #28a745;
-        color: white;
-        border-color: #1e7e34;
-    }
+.bingoCell.active {
+  background: #28a745;
+  color: white;
+  border-color: #1e7e34;
+}
 
-    /* Debug Button */
-    #debugToggle {
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        z-index: 99999;
-        background: #444;
-        color: #fff;
-        border: none;
-        padding: 6px 10px;
-        border-radius: 6px;
-        font-size: 12px;
-        cursor: pointer;
-    }
+/* Debug Button */
+#debugToggle {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 99999;
+  background: #444;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
 
-    /* Debug Panel */
-    #debugPanel {
-        display: none;
-        position: fixed;
-        top: 50px;
-        right: 10px;
-        width: 300px;
-        max-height: 70vh;
-        overflow: auto;
-        z-index: 99999;
-        background: #222;
-        color: #0f0;
-        padding: 10px;
-        font-family: monospace;
-        font-size: 12px;
-        white-space: pre-line;
-        border: 1px solid #0f0;
-        border-radius: 6px;
-    }
+/* Debug Panel */
+#debugPanel {
+  display: none;
+  position: fixed;
+  top: 50px;
+  right: 10px;
+  width: 300px;
+  max-height: 70vh;
+  overflow: auto;
+  z-index: 99999;
+  background: #222;
+  color: #0f0;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 12px;
+  white-space: pre-line;
+  border: 1px solid #0f0;
+  border-radius: 6px;
+}
 
-    /* Gewinn-Vorschläge */
-    #bingoPrizeBox {
-        margin: 20px auto;
-        padding: 20px;
-        width: 300px;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        font-size: 15px;
-        line-height: 1.5;
-    }
+/* Gewinn-Vorschläge */
+#bingoPrizeBox {
+  margin: 20px auto;
+  padding: 20px;
+  width: 300px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  font-size: 15px;
+  line-height: 1.5;
+}
 </style>
 </head>
 
@@ -166,22 +166,22 @@
 
 <!-- LOGIN -->
 <div id="loginBox">
-    <h3>Login / Registrierung (optional)</h3>
-    <input id="emailInput" type="email" placeholder="E-Mail">
-    <input id="nicknameInput" type="text" placeholder="Nickname">
-    <button onclick="registerPlayer()">Login / Registrieren</button>
+  <h3>Login / Registrierung (optional)</h3>
+  <input id="emailInput" type="email" placeholder="E-Mail">
+  <input id="nicknameInput" type="text" placeholder="Nickname">
+  <button onclick="registerPlayer()">Login / Registrieren</button>
 </div>
 
 <!-- PLAYER INFO -->
 <div id="playerInfo">
-    Eingeloggt als: <strong id="playerNickname"></strong>
+  Eingeloggt als: <strong id="playerNickname"></strong>
 </div>
 
 <!-- GROUP BOX -->
 <div id="groupBox">
-    <h3>Gruppe wählen / erstellen</h3>
-    <input id="groupInput" type="text" placeholder="Gruppenname">
-    <button onclick="createOrSelectGroup()">Gruppe setzen</button>
+  <h3>Gruppe wählen / erstellen</h3>
+  <input id="groupInput" type="text" placeholder="Gruppenname">
+  <button onclick="createOrSelectGroup()">Gruppe setzen</button>
 </div>
 
 <!-- BINGO GRID -->
@@ -189,12 +189,12 @@
 
 <!-- Gewinn-Vorschläge -->
 <div id="bingoPrizeBox">
-    <h3>Bingo Gewinn Vorschläge</h3>
-    🎁 Pot-System (alle zahlen ein, Gewinner bekommt den Pot)<br>
-    🍺 Getränk im Clubhaus (vom Verlierer spendiert)<br>
-    🐦 Bingo-Maskottchen (kleiner Wanderpokal)<br>
-    🏆 Ehrenpunkt in der Gruppe<br>
-    🎉 Überraschungspreis nach Wahl der Gruppe<br>
+  <h3>Bingo Gewinn Vorschläge</h3>
+  🎁 Pot-System (alle zahlen ein, Gewinner bekommt den Pot)<br>
+  🍺 Getränk im Clubhaus (vom Verlierer spendiert)<br>
+  🐦 Bingo-Maskottchen (kleiner Wanderpokal)<br>
+  🏆 Ehrenpunkt in der Gruppe<br>
+  🎉 Überraschungspreis nach Wahl der Gruppe<br>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -202,9 +202,6 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
-/* =========================
-   Firebase Setup
-   ========================= */
 const firebaseConfig = {
   apiKey: "AIzaSyBYbJf5foIHN215VYj-RtumPg-ZyQWzlgI",
   authDomain: "golf-bingo-24ad7.firebaseapp.com",
@@ -217,19 +214,14 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-/* =========================
-   LOGIN OPTIONAL
-   ========================= */
+/* Login optional */
 auth.onAuthStateChanged(async user => {
-  // Bingo immer sichtbar
   loadBingoGrid();
   bingoPrizeBox.style.display = "block";
-
   if (!user) return;
 
   const userRef = db.collection("users").doc(user.uid);
   let doc = await userRef.get();
-
   if (!doc.exists) {
     await userRef.set({
       email: user.email,
@@ -246,9 +238,7 @@ auth.onAuthStateChanged(async user => {
   groupBox.style.display = "block";
 });
 
-/* =========================
-   REGISTRATION (Fix)
-   ========================= */
+/* Registrierung */
 async function registerPlayer() {
   const email = emailInput.value.trim();
   const nickname = nicknameInput.value.trim();
@@ -259,7 +249,6 @@ async function registerPlayer() {
 
   const defaultPassword = "GlenCupDefaultPassword123";
   let userCredential;
-
   try {
     userCredential = await auth.signInWithEmailAndPassword(email, defaultPassword);
   } catch {
@@ -274,14 +263,11 @@ async function registerPlayer() {
     activeGroup: ""
   }, { merge: true });
 
-  // Auth-Status sofort aktualisieren
   auth.updateCurrentUser(userCredential.user);
   alert("Login erfolgreich!");
 }
 
-/* =========================
-   GROUP HANDLING
-   ========================= */
+/* Gruppen */
 async function createOrSelectGroup() {
   const groupName = groupInput.value.trim();
   if (!groupName) return;
@@ -299,37 +285,4 @@ async function createOrSelectGroup() {
 
   await db.collection("users").doc(uid).set({
     activeGroup: groupName,
-    groups: firebase.firestore.FieldValue.arrayUnion(groupName)
-  }, { merge: true });
-
-  loadBingoGrid();
-}
-
-/* =========================
-   BINGO GRID
-   ========================= */
-const bingoItems = [
-  "Fairway getroffen", "Birdie Chance", "Sand Save", "Chip-in Versuch",
-  "Par gerettet", "Drive > 200m", "Putt gelocht", "Rough getroffen",
-  "Wasserhindernis", "Bunker getroffen", "Green in Regulation",
-  "Up & Down", "Bogey", "Double Bogey", "Fette Kugel",
-  "Slice", "Hook", "Topper", "Ball verloren", "Neuer Ball",
-  "Pitch gelungen", "Chip gelungen", "Putt knapp vorbei",
-  "Drive verzogen", "Lucky Bounce"
-];
-
-function loadBingoGrid() {
-  bingoGrid.innerHTML = "";
-  bingoGrid.style.display = "grid";
-  bingoItems.forEach(item => {
-    const cell = document.createElement("div");
-    cell.className = "bingoCell";
-    cell.textContent = item;
-    cell.onclick = () => cell.classList.toggle("active");
-    bingoGrid.appendChild(cell);
-  });
-}
-</script>
-
-</body>
-</html>
+    groups:
