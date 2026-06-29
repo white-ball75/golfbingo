@@ -206,19 +206,44 @@
   </style>
 </head>
 <body>
-  
+<button id="debugToggle" style="
+  position:fixed;
+  top:10px;
+  right:10px;
+  z-index:99999;
+  background:#444;
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  border-radius:6px;
+  font-size:12px;
+  cursor:pointer;
+">
+  Debug
+</button>
+
 <div id="debugPanel" style="
+  display:none;
+  position:fixed;
+  top:50px;
+  right:10px;
+  width:300px;
+  max-height:70vh;
+  overflow:auto;
+  z-index:99999;
   background:#222;
   color:#0f0;
   padding:10px;
   font-family:monospace;
   font-size:12px;
-  border-radius:8px;
-  margin-bottom:12px;
   white-space:pre-line;
+  border:1px solid #0f0;
+  border-radius:6px;
 ">
   DEBUG PANEL INITIALIZING...
 </div>
+
+
 
   <h1>⛳ Glen Cup Bingo 🏌️‍♂️
   by White Ball Marketing </h1>
@@ -725,8 +750,14 @@ async function registerPlayer() {
    DEBUG PANEL
    ========================= */
 
+document.getElementById("debugToggle").addEventListener("click", () => {
+  const panel = document.getElementById("debugPanel");
+  panel.style.display = panel.style.display === "none" ? "block" : "none";
+});
+
 async function updateDebugPanel(message = "") {
   const panel = document.getElementById("debugPanel");
+  if (!panel) return;
 
   let output = "[DEBUG]\n";
 
@@ -763,7 +794,6 @@ async function updateDebugPanel(message = "") {
     }
   }
 
-  // Optional message
   if (message) {
     output += "\nMessage: " + message + "\n";
   }
@@ -771,7 +801,6 @@ async function updateDebugPanel(message = "") {
   panel.textContent = output;
 }
 
-// Update every 1.5 seconds
 setInterval(updateDebugPanel, 1500);
 
 
