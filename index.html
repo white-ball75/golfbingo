@@ -1,369 +1,187 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <title>Glen Cup Bingo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="manifest" href="manifest.json" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glen Cup Bingo</title>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-
-  <style>
+<style>
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 16px;
-      background: #0b3b24;
-      color: #f5f5f5;
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        margin: 0;
+        padding: 0;
+        text-align: center;
     }
 
-    /* TITLE WITH GOLF ICONS */
     h1 {
-      text-align: center;
-      margin-bottom: 8px;
-      font-size: 28px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
+        margin-top: 20px;
+        font-size: 28px;
     }
 
-    /* POT SYSTEM */
-    .pot-box {
-      background: #145c37;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      font-size: 14px;
-    }
-    .pot-box input {
-      width: 70px;
-      padding: 4px;
-      border-radius: 4px;
-      border: none;
-      margin-right: 4px;
-    }
-    .pot-value {
-      font-weight: bold;
+    /* Login Box */
+    #loginBox {
+        margin: 20px auto;
+        padding: 20px;
+        width: 300px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    /* GRID */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 6px;
-      margin-top: 10px;
-    }
-    .cell {
-      background: rgba(255,255,255,0.08);
-      border-radius: 6px;
-      padding: 6px;
-      font-size: 11px;
-      text-align: center;
-      min-height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.15);
-      transition: background 0.2s ease;
-    }
-    .cell.marked {
-      background: #2ecc71;
-      color: #062012;
-      font-weight: 600;
+    #loginBox input {
+        width: 90%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 6px;
+        border: 1px solid #ccc;
     }
 
-    /* GOLD BLINK */
-    @keyframes goldBlink {
-      0% { background: gold; color: black; }
-      50% { background: #fff8b3; color: black; }
-      100% { background: gold; color: black; }
-    }
-    .blink-gold {
-      animation: goldBlink 0.6s ease-in-out infinite;
-    }
-
-    /* STATUS */
-    .status {
-      margin-top: 10px;
-      text-align: center;
-      font-size: 14px;
-      min-height: 20px;
+    #loginBox button {
+        width: 95%;
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
     }
 
-    /* RESET BUTTON */
-    .reset-box {
-      text-align:center;
-      margin-top:14px;
-    }
-    .reset-btn {
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      background: #ecf0f1;
-      color: #1b1b1b;
+    /* Player Info */
+    #playerInfo {
+        margin-top: 20px;
+        font-size: 18px;
+        display: none;
     }
 
-    /* BOTTOM SHEET OVERLAY */
-    .sheet-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.35);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-      z-index: 9998;
-    }
-    .sheet-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
+    /* Group Box */
+    #groupBox {
+        margin: 20px auto;
+        padding: 20px;
+        width: 300px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        display: none;
     }
 
-    /* BOTTOM SHEET */
-    .bottom-sheet {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 55vh;
-      background: #ffffff;
-      color: #000;
-      border-top-left-radius: 16px;
-      border-top-right-radius: 16px;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
-      transform: translateY(100%);
-      transition: transform 0.28s ease;
-      display: flex;
-      flex-direction: column;
-      padding: 16px;
-      z-index: 9999;
-    }
-    .bottom-sheet.active {
-      transform: translateY(0%);
+    #groupBox input {
+        width: 90%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 6px;
+        border: 1px solid #ccc;
     }
 
-    .sheet-handle {
-      width: 40px;
-      height: 5px;
-      background: #ccc;
-      border-radius: 3px;
-      margin: 0 auto 12px auto;
+    #groupBox button {
+        width: 95%;
+        padding: 10px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
     }
 
-    /* ANIMATED CONTENT */
-    .sheet-content-animate {
-      opacity: 0;
-      transform: translateY(12px) scale(0.95);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-    }
-    .sheet-content-animate.active {
-      opacity: 1;
-      transform: translateY(0px) scale(1);
-    }
-
-    .sheet-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .sheet-text {
-      font-size: 15px;
-      line-height: 1.4;
-      flex: 1;
-    }
-    .sheet-close {
-      margin-top: 16px;
-      padding: 10px;
-      background: #0b3b24;
-      color: #fff;
-      border-radius: 8px;
-      text-align: center;
-      font-weight: 600;
-      cursor: pointer;
+    /* Bingo Grid */
+    #bingoGrid {
+        margin: 20px auto;
+        width: 90%;
+        max-width: 600px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+        display: none;
     }
 
-    /* Disable Bottom Sheet visually (can be re-enabled later) */
-    .bottom-sheet,
-    .sheet-overlay {
-      display: none !important;
+    .bingoCell {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        font-size: 14px;
     }
 
-    /* Simple section styling */
-    .section-box {
-      background:#145c37;
-      padding:12px;
-      border-radius:8px;
-      margin-top:12px;
-      font-size:14px;
+    .bingoCell.active {
+        background: #28a745;
+        color: white;
+        border-color: #1e7e34;
     }
-  </style>
+
+    /* Debug Button */
+    #debugToggle {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 99999;
+        background: #444;
+        color: #fff;
+        border: none;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    /* Debug Panel */
+    #debugPanel {
+        display: none;
+        position: fixed;
+        top: 50px;
+        right: 10px;
+        width: 300px;
+        max-height: 70vh;
+        overflow: auto;
+        z-index: 99999;
+        background: #222;
+        color: #0f0;
+        padding: 10px;
+        font-family: monospace;
+        font-size: 12px;
+        white-space: pre-line;
+        border: 1px solid #0f0;
+        border-radius: 6px;
+    }
+</style>
 </head>
-<body>
-<button id="debugToggle" style="
-  position:fixed;
-  top:10px;
-  right:10px;
-  z-index:99999;
-  background:#444;
-  color:#fff;
-  border:none;
-  padding:6px 10px;
-  border-radius:6px;
-  font-size:12px;
-  cursor:pointer;
-">
-  Debug
-</button>
 
-<div id="debugPanel" style="
-  display:none;
-  position:fixed;
-  top:50px;
-  right:10px;
-  width:300px;
-  max-height:70vh;
-  overflow:auto;
-  z-index:99999;
-  background:#222;
-  color:#0f0;
-  padding:10px;
-  font-family:monospace;
-  font-size:12px;
-  white-space:pre-line;
-  border:1px solid #0f0;
-  border-radius:6px;
-">
-  DEBUG PANEL INITIALIZING...
+<body>
+
+<button id="debugToggle">Debug</button>
+<div id="debugPanel">DEBUG PANEL INITIALIZING...</div>
+
+<h1>⛳ Glen Cup Bingo 🏌️‍♂️</h1>
+
+<!-- LOGIN -->
+<div id="loginBox">
+    <h3>Login / Registrierung</h3>
+    <input id="emailInput" type="email" placeholder="E-Mail">
+    <input id="nicknameInput" type="text" placeholder="Nickname">
+    <button onclick="registerPlayer()">Login / Registrieren</button>
 </div>
 
+<!-- PLAYER INFO -->
+<div id="playerInfo">
+    Eingeloggt als: <strong id="playerNickname"></strong>
+</div>
 
+<!-- GROUP BOX -->
+<div id="groupBox">
+    <h3>Gruppe wählen / erstellen</h3>
+    <input id="groupInput" type="text" placeholder="Gruppenname">
+    <button onclick="createOrSelectGroup()">Gruppe setzen</button>
+</div>
 
-  <h1>⛳ Glen Cup Bingo 🏌️‍♂️
-  by White Ball Marketing </h1>
+<!-- BINGO GRID -->
+<div id="bingoGrid"></div>
 
-  <!-- Intro / How to Play -->
-  <div class="section-box" style="text-align:center; line-height:1.4;">
-    <h2 style="margin:0; font-size:20px;">How to Play</h2>
-    <p style="margin-top:6px; font-size:14px;">
-      Glen Cup Bingo turns every golf round into a fun, competitive challenge.<br>
-      Tap a field whenever the described golf moment happens.<br>
-      Five marked fields in a row — horizontally, vertically or diagonally — score a Bingo and win the pot.
-    </p>
-  </div>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-  <!-- Optional Login -->
-  <div id="loginBox" class="section-box">
-    <h2 style="margin:0; font-size:18px;">Player Login (optional)</h2>
-    <p style="margin-top:6px; font-size:13px;">
-      Log in with your email and nickname to join groups and track your Bingo rounds.
-    </p>
-    <input id="emailInput" type="email" placeholder="Email" style="width:100%; margin-top:8px; padding:6px;">
-    <input id="nicknameInput" type="text" placeholder="Nickname" style="width:100%; margin-top:8px; padding:6px;">
-    <button onclick="registerPlayer()" style="margin-top:10px; padding:8px 14px; border-radius:8px;">Register / Login</button>
-  </div>
-
-  <!-- Player Info + Active Group -->
-  <div id="playerInfo" class="section-box" style="display:none;">
-    <h2 style="margin:0; font-size:18px;">Player</h2>
-    <p style="margin-top:6px; font-size:14px;">
-      Nickname: <strong id="playerNickname"></strong><br>
-      Active Group: <strong id="playerGroup"></strong>
-    </p>
-  </div>
-
-  <!-- Group Management -->
-  <div id="groupBox" class="section-box" style="display:none;">
-    <h2 style="margin:0; font-size:18px;">Groups</h2>
-
-    <h3 style="margin-top:8px; font-size:16px;">Create Group</h3>
-    <input id="newGroupName" type="text" placeholder="New group name" style="width:100%; margin-top:6px; padding:6px;">
-    <button onclick="createGroup()" style="margin-top:8px; padding:8px 14px; border-radius:8px;">Create Group</button>
-
-    <h3 style="margin-top:16px; font-size:16px;">Join Group</h3>
-    <input id="joinGroupName" type="text" placeholder="Existing group name" style="width:100%; margin-top:6px; padding:6px;">
-    <button onclick="joinGroup()" style="margin-top:8px; padding:8px 14px; border-radius:8px;">Join Group</button>
-
-    <h3 style="margin-top:16px; font-size:16px;">Select Active Group</h3>
-    <select id="groupSelect" style="width:100%; margin-top:6px; padding:6px;" onchange="selectActiveGroup()">
-      <option value="">No group selected</option>
-    </select>
-  </div>
-
-  <!-- Pot System -->
-  <div class="pot-box">
-    <div><strong>Pot System (Variant B)</strong></div>
-    <div style="margin-top:4px;">
-      Players: <input type="number" id="players" min="1" value="4" />
-      Stake (€): <input type="number" id="stake" min="1" value="2" />
-      <button class="reset-btn" onclick="updatePot()">Update Pot</button>
-    </div>
-    <div style="margin-top:6px;">
-      Current Pot: <span class="pot-value" id="potValue">8 €</span>
-    </div>
-   </div>
-  </div>
-
-  <!-- Grid -->
-  <div class="grid" id="grid"></div>
-
-  <!-- Reset Button -->
-  <div class="reset-box">
-    <button class="reset-btn" onclick="resetBoard()">Reset Bingo Grid</button>
-  </div>
-
-  <!-- Status -->
-  <div class="status" id="status"></div>
-
-  <!-- Bottom Sheet Overlay (currently disabled via CSS) -->
-  <div id="sheetOverlay" class="sheet-overlay"></div>
-
-  <!-- Bottom Sheet (currently disabled via CSS) -->
-  <div id="bottomSheet" class="bottom-sheet">
-    <div class="sheet-handle"></div>
-    <div id="sheetContent" class="sheet-content-animate">
-      <div class="sheet-title" id="sheetTitle">Title</div>
-      <div class="sheet-text" id="sheetText">Description</div>
-    </div>
-    <div class="sheet-close" onclick="closeSheet()">Close</div>
-  </div>
-
-  <!-- Legend -->
-  <div class="section-box">
-    <h2 style="margin:0; font-size:18px;">Field Legend</h2>
-    <p style="margin-top:6px; font-size:14px; line-height:1.4;">
-      Each field represents a typical moment on the golf course. Here are a few examples:
-    </p>
-    <ul style="font-size:14px; margin-left:18px; line-height:1.5;">
-      <li><strong>Long and strong down the middle-Drive</strong> — A perfect drive straight down the fairway.</li>
-      <li><strong>GIR Par 3</strong> — Green in regulation on a Par 3.</li>
-      <li><strong>3-Put</strong> — The putt nobody wanted.</li>
-      <li><strong>Slice Deluxe</strong> — An unintentional very big curve away from the target.</li>
-      <li><strong>Ice on the ball - tee shot</strong> — A tee shot that goes so very high it might as well have ice /snow on it.</li>
-    </ul>
-    <p style="font-size:13px; opacity:0.8;">(You can expand this list with all 25 fields.)</p>
-  </div>
-
-  <!-- Tips -->
-  <div class="section-box">
-    <h2 style="margin:0; font-size:18px;">Tips for a Great Bingo Round</h2>
-    <ul style="font-size:14px; margin-left:18px; line-height:1.5; margin-top:6px;">
-      <li>Keep an eye on your own shots and your playing partners.</li>
-      <li>Mark only real events — fairness keeps the game fun.</li>
-      <li>Enjoy the round and celebrate the funny moments.</li>
-      <li>Play at a steady pace to keep the game flowing.</li>
-      <li>Agree on pot rules before the round starts.</li>
-    </ul>
-  </div>
-
-  <script>
-    /* =========================
+<script>
+/* =========================
    Firebase Setup
    ========================= */
 
@@ -380,433 +198,155 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+/* =========================
+   AUTH HANDLING
+   ========================= */
 
-    /* =========================
-       Bingo Fields
-       ========================= */
-
-    const titles = [
-      ">6 footer sunk", "3-Put", "Long and strong down the middle-Drive", "Sissy iron teee shot (Par 4/5 only)", "Slice Deluxe",
-      "GIR Par 3", "GIR Par 4", "Par", "Bogey", "Birdie",
-      "Double Par", "intentional draw", "intentional fade", "Pitch to < 4 m to pin", "Still me",
-      "Chip to <1 Putter length to pin", "Sand save (1Put)", "Lady", "Hazenmaker", "shooter - green overhit",
-      "Lip-Out Legend", "Should not have used driver", "Should have used driver",
-      "lousy but usefull", "Ice on the ball - tee shot"
-    ];
-
-    const descriptions = {
-      ">6 footer sunk": "A long putt successfully holed.",
-      "3-Put": "Three putts on a single green.",
-      "Long and strong down the middle-Drive": "A powerful drive straight down the fairway.",
-      "Sissy iron teee shot (Par 4/5 only)": "A cautious iron from the tee on a Par 4 or 5.",
-      "Slice Deluxe": "A big slice away from the target.",
-      "GIR Par 3": "Green in regulation on a Par 3.",
-      "GIR Par 4": "Green in regulation on a Par 4.",
-      "Par": "Hole completed in regulation.",
-      "Bogey": "One stroke over par.",
-      "Birdie": "One stroke under par.",
-      "Double Par": "Twice the par on a hole.",
-      "intentional draw": "A planned right-to-left shot.",
-      "intentional fade": "A planned left-to-right shot.",
-      "Pitch to < 4 m to pin": "Pitch shot finishing within 4 meters of the pin.",
-      "Still me": "Your shot didn’t change the order — still your turn.",
-      "Chip to <1 Putter length to pin": "Chip shot finishing within one putter length.",
-      "Sand save (1Put)": "Up-and-down from the bunker with one putt.",
-      "Lady": "Short tee shot, often joked about.",
-      "Hazenmaker": "A shot that barely clears trouble.",
-      "shooter - green overhit": "Approach shot that flies past the green.",
-      "Lip-Out Legend": "Putt that circles the cup and stays out.",
-      "Should not have used driver": "Driver choice that went wrong.",
-      "Should have used driver": "Too conservative club choice off the tee.",
-      "lousy but usefull": "Ugly shot, good result.",
-      "Ice on the ball - tee shot": "Perfectly struck tee shot."
-    };
-
-    const size = 5;
-    let cells = [];
-    let bingoActive = false;
-
-    function setStatus(msg) {
-      document.getElementById("status").textContent = msg;
-    }
-
-    function shuffle(array) {
-      return array
-        .map(v => ({ v, sort: Math.random() }))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({ v }) => v);
-    }
-
-    function buildGrid() {
-      const grid = document.getElementById("grid");
-      grid.innerHTML = "";
-      const shuffled = shuffle(titles);
-      cells = [];
-      bingoActive = false;
-
-      for (let i = 0; i < size * size; i++) {
-        const div = document.createElement("div");
-        div.className = "cell";
-        div.textContent = shuffled[i];
-        div.dataset.index = i;
-        div.onclick = () => handleCellTap(i, shuffled[i]);
-        grid.appendChild(div);
-        cells.push({ marked: false, el: div });
-      }
-      setStatus("");
-    }
-
-    function handleCellTap(index, title) {
-      if (bingoActive) {
-        openSheet(title);
+auth.onAuthStateChanged(async user => {
+    if (!user) {
+        loginBox.style.display = "block";
+        playerInfo.style.display = "none";
+        groupBox.style.display = "none";
+        bingoGrid.style.display = "none";
         return;
-      }
-
-      cells[index].marked = !cells[index].marked;
-      cells[index].el.classList.toggle("marked");
-
-      openSheet(title);
-
-      const bingoLine = checkBingo();
-      if (bingoLine) triggerBingoEffects(bingoLine);
     }
 
-    function checkBingo() {
-      const marked = i => cells[i].marked;
+    const doc = await db.collection("users").doc(user.uid).get();
 
-      // Rows
-      for (let r = 0; r < size; r++) {
-        let ok = true;
-        let line = [];
-        for (let c = 0; c < size; c++) {
-          const idx = r * size + c;
-          line.push(idx);
-          if (!marked(idx)) ok = false;
-        }
-        if (ok) return line;
-      }
-
-      // Columns
-      for (let c = 0; c < size; c++) {
-        let ok = true;
-        let line = [];
-        for (let r = 0; r < size; r++) {
-          const idx = r * size + c;
-          line.push(idx);
-          if (!marked(idx)) ok = false;
-        }
-        if (ok) return line;
-      }
-
-      // Diagonal 1
-      let ok1 = true;
-      let diag1 = [];
-      for (let i = 0; i < size; i++) {
-        const idx = i * size + i;
-        diag1.push(idx);
-        if (!marked(idx)) ok1 = false;
-      }
-      if (ok1) return diag1;
-
-      // Diagonal 2
-      let ok2 = true;
-      let diag2 = [];
-      for (let i = 0; i < size; i++) {
-        const idx = i * size + (size - 1 - i);
-        diag2.push(idx);
-        if (!marked(idx)) ok2 = false;
-      }
-      if (ok2) return diag2;
-
-      return null;
+    if (!doc.exists) {
+        loginBox.style.display = "block";
+        return;
     }
 
-    function triggerBingoEffects(line) {
-      bingoActive = true;
-      setStatus("BINGO! 🍺");
+    const data = doc.data();
+    playerNickname.textContent = data.nickname;
+    loginBox.style.display = "none";
+    playerInfo.style.display = "block";
+    groupBox.style.display = "block";
 
-      line.forEach(i => cells[i].el.classList.add("blink-gold"));
-
-      if (!window.confettiLoaded) {
-        const script = document.createElement("script");
-        script.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js";
-        script.onload = () => {
-          window.confettiLoaded = true;
-          startConfettiEffect();
-        };
-        document.body.appendChild(script);
-      } else {
-        startConfettiEffect();
-      }
-
-      setTimeout(() => {
-        line.forEach(i => cells[i].el.classList.remove("blink-gold"));
-      }, 8000);
+    if (data.activeGroup) {
+        loadBingoGrid();
     }
-
-    function startConfettiEffect() {
-      const duration = 8000;
-      const end = Date.now() + duration;
-
-      (function frame() {
-        confetti({
-          particleCount: 5,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
-        if (Date.now() < end) requestAnimationFrame(frame);
-      })();
-    }
-
-    /* Bottom Sheet (currently visually disabled) */
-    function openSheet(title) {
-      const desc = descriptions[title] || "";
-      document.getElementById("sheetTitle").textContent = title;
-      document.getElementById("sheetText").textContent = desc;
-      // visually disabled via CSS; logic kept for future reactivation
-    }
-
-    function closeSheet() {
-      // no-op while sheet is disabled
-    }
-
-    document.getElementById("sheetOverlay").onclick = closeSheet;
-
-    function resetBoard() {
-      bingoActive = false;
-      cells.forEach(c => c.el.classList.remove("blink-gold"));
-      buildGrid();
-      setStatus("New Bingo started. Pot remains unchanged.");
-    }
-
-    function updatePot() {
-      const players = parseInt(document.getElementById("players").value || "0", 10);
-      const stake = parseFloat(document.getElementById("stake").value || "0");
-      const pot = players * stake;
-      document.getElementById("potValue").textContent = pot.toFixed(2) + " €";
-      setStatus("Pot updated. First Bingo wins " + pot.toFixed(2) + " €.");
-    }
-
-    /* =========================
-       Firebase Auth + Groups
-       ========================= */
-
-async function registerPlayer() {
-  const email = document.getElementById("emailInput").value.trim();
-  const nickname = document.getElementById("nicknameInput").value.trim();
-
-  if (!email || !nickname) {
-    alert("Please enter email and nickname.");
-    return;
-  }
-
-  const defaultPassword = "GlenCupDefaultPassword123";
-
-  let userCredential;
-
-  try {
-    userCredential = await auth.signInWithEmailAndPassword(email, defaultPassword);
-  } catch (e) {
-    userCredential = await auth.createUserWithEmailAndPassword(email, defaultPassword);
-
-    // E-Mail Verification senden
-    try {
-      await userCredential.user.sendEmailVerification();
-    } catch (err) {
-      console.log("Email verification error:", err);
-    }
-  }
-
-  const uid = userCredential.user.uid;
-
-  // Firestore-Daten IMMER anlegen
-  await db.collection("users").doc(uid).set({
-    email,
-    nickname,
-    groups: [],
-    activeGroup: ""
-  }, { merge: true });
-
-  // UI aktualisieren
-  document.getElementById("playerNickname").textContent = nickname;
-  document.getElementById("playerInfo").style.display = "block";
-  document.getElementById("loginBox").style.display = "none";
-  document.getElementById("groupBox").style.display = "block";
-
-  loadUserData(uid);
-}
-
-
-    async function loadUserData(uid) {
-      const doc = await db.collection("users").doc(uid).get();
-      if (!doc.exists) return;
-      const data = doc.data();
-
-      document.getElementById("playerNickname").textContent = data.nickname || "";
-      document.getElementById("playerGroup").textContent = data.activeGroup || "";
-
-      const select = document.getElementById("groupSelect");
-      select.innerHTML = '<option value="">No group selected</option>';
-      (data.groups || []).forEach(g => {
-        const opt = document.createElement("option");
-        opt.value = g;
-        opt.textContent = g;
-        if (g === data.activeGroup) opt.selected = true;
-        select.appendChild(opt);
-      });
-    }
-
-    async function createGroup() {
-      const name = document.getElementById("newGroupName").value.trim();
-      const user = auth.currentUser;
-      if (!user || !name) return;
-
-      await db.collection("groups").doc(name).set({
-        name,
-        members: [user.uid]
-      }, { merge: true });
-
-      await db.collection("users").doc(user.uid).update({
-        groups: firebase.firestore.FieldValue.arrayUnion(name),
-        activeGroup: name
-      });
-
-      document.getElementById("playerGroup").textContent = name;
-      loadUserData(user.uid);
-    }
-
-    async function joinGroup() {
-      const name = document.getElementById("joinGroupName").value.trim();
-      const user = auth.currentUser;
-      if (!user || !name) return;
-
-      await db.collection("groups").doc(name).set({
-        name,
-        members: firebase.firestore.FieldValue.arrayUnion(user.uid)
-      }, { merge: true });
-
-      await db.collection("users").doc(user.uid).update({
-        groups: firebase.firestore.FieldValue.arrayUnion(name),
-        activeGroup: name
-      });
-
-      document.getElementById("playerGroup").textContent = name;
-      loadUserData(user.uid);
-    }
-
-    async function selectActiveGroup() {
-      const user = auth.currentUser;
-      if (!user) return;
-      const select = document.getElementById("groupSelect");
-      const groupName = select.value;
-
-      await db.collection("users").doc(user.uid).update({
-        activeGroup: groupName
-      });
-
-      document.getElementById("playerGroup").textContent = groupName || "";
-    }
-
-    aauth.onAuthStateChanged(async user => {
-  if (!user) {
-    // Kein User eingeloggt → Login anzeigen
-    document.getElementById("loginBox").style.display = "block";
-    document.getElementById("playerInfo").style.display = "none";
-    document.getElementById("groupBox").style.display = "none";
-    return;
-  }
-
-  // User eingeloggt → prüfen, ob Firestore-Daten existieren
-  const doc = await db.collection("users").doc(user.uid).get();
-
-  if (!doc.exists) {
-    // User ist eingeloggt, aber Firestore-Daten fehlen → Login anzeigen
-    document.getElementById("loginBox").style.display = "block";
-    document.getElementById("playerInfo").style.display = "none";
-    document.getElementById("groupBox").style.display = "none";
-    return;
-  }
-
-  // Firestore-Daten vorhanden → UI anzeigen
-  document.getElementById("loginBox").style.display = "none";
-  document.getElementById("playerInfo").style.display = "block";
-  document.getElementById("groupBox").style.display = "block";
-
-  loadUserData(user.uid);
 });
 
+/* =========================
+   REGISTRATION
+   ========================= */
 
-    /* Service Worker */
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("service-worker.js").catch(() => {});
-      });
+async function registerPlayer() {
+    const email = emailInput.value.trim();
+    const nickname = nicknameInput.value.trim();
+
+    if (!email || !nickname) {
+        alert("Bitte E-Mail und Nickname eingeben.");
+        return;
     }
 
-    buildGrid();
-    updatePot();
+    const defaultPassword = "GlenCupDefaultPassword123";
+    let userCredential;
+
+    try {
+        userCredential = await auth.signInWithEmailAndPassword(email, defaultPassword);
+    } catch {
+        userCredential = await auth.createUserWithEmailAndPassword(email, defaultPassword);
+    }
+
+    const uid = userCredential.user.uid;
+
+    await db.collection("users").doc(uid).set({
+        email,
+        nickname,
+        groups: [],
+        activeGroup: ""
+    }, { merge: true });
+
+    playerNickname.textContent = nickname;
+    loginBox.style.display = "none";
+    playerInfo.style.display = "block";
+    groupBox.style.display = "block";
+}
+
+/* =========================
+   GROUP HANDLING
+   ========================= */
+
+async function createOrSelectGroup() {
+    const groupName = groupInput.value.trim();
+    if (!groupName) return;
+
+    const user = auth.currentUser;
+    const uid = user.uid;
+
+    await db.collection("groups").doc(groupName).set({
+        name: groupName,
+        members: firebase.firestore.FieldValue.arrayUnion(uid)
+    }, { merge: true });
+
+    await db.collection("users").doc(uid).set({
+        activeGroup: groupName,
+        groups: firebase.firestore.FieldValue.arrayUnion(groupName)
+    }, { merge: true });
+
+    loadBingoGrid();
+}
+
+/* =========================
+   BINGO GRID
+   ========================= */
+
+const bingoItems = [
+    "Fairway getroffen", "Birdie Chance", "Sand Save", "Chip-in Versuch",
+    "Par gerettet", "Drive > 200m", "Putt gelocht", "Rough getroffen",
+    "Wasserhindernis", "Bunker getroffen", "Green in Regulation",
+    "Up & Down", "Bogey", "Double Bogey", "Fette Kugel",
+    "Slice", "Hook", "Topper", "Ball verloren", "Neuer Ball",
+    "Pitch gelungen", "Chip gelungen", "Putt knapp vorbei",
+    "Drive verzogen", "Lucky Bounce"
+];
+
+function loadBingoGrid() {
+    bingoGrid.innerHTML = "";
+    bingoGrid.style.display = "grid";
+
+    bingoItems.forEach((item, index) => {
+        const cell = document.createElement("div");
+        cell.className = "bingoCell";
+        cell.textContent = item;
+
+        cell.onclick = () => {
+            cell.classList.toggle("active");
+        };
+
+        bingoGrid.appendChild(cell);
+    });
+}
 
 /* =========================
    DEBUG PANEL
    ========================= */
 
-document.getElementById("debugToggle").addEventListener("click", () => {
-  const panel = document.getElementById("debugPanel");
-  panel.style.display = panel.style.display === "none" ? "block" : "none";
+debugToggle.addEventListener("click", () => {
+  debugPanel.style.display = debugPanel.style.display === "none" ? "block" : "none";
 });
 
-async function updateDebugPanel(message = "") {
-  const panel = document.getElementById("debugPanel");
-  if (!panel) return;
-
+async function updateDebugPanel() {
   let output = "[DEBUG]\n";
 
-  // Firebase check
-  try {
-    output += "Firebase: CONNECTED\n";
-  } catch (e) {
-    output += "Firebase: ERROR\n";
-  }
-
-  // Auth check
   const user = auth.currentUser;
+
+  output += "Firebase: CONNECTED\n";
+  output += user ? "Auth User: " + user.email + "\n" : "Auth User: none\n";
+
   if (user) {
-    output += "Auth User: uid=" + user.uid + ", email=" + user.email + "\n";
-  } else {
-    output += "Auth User: none\n";
+    const doc = await db.collection("users").doc(user.uid).get();
+    output += doc.exists ? "UserDoc: FOUND\n" : "UserDoc: MISSING\n";
   }
 
-  // Firestore user doc check
-  if (user) {
-    try {
-      const doc = await db.collection("users").doc(user.uid).get();
-      if (doc.exists) {
-        output += "Firestore User Doc: FOUND\n";
-        const data = doc.data();
-        output += "Nickname: " + (data.nickname || "missing") + "\n";
-        output += "Active Group: " + (data.activeGroup || "none") + "\n";
-        output += "Groups: " + JSON.stringify(data.groups || []) + "\n";
-      } else {
-        output += "Firestore User Doc: MISSING\n";
-      }
-    } catch (err) {
-      output += "Firestore User Doc: ERROR (" + err.message + ")\n";
-    }
-  }
-
-  if (message) {
-    output += "\nMessage: " + message + "\n";
-  }
-
-  panel.textContent = output;
+  debugPanel.textContent = output;
 }
 
 setInterval(updateDebugPanel, 1500);
 
-
-
-    
-  </script>
-
+</script>
 </body>
 </html>
