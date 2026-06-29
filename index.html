@@ -8,7 +8,7 @@
 <style>
 body {
     font-family: Arial, sans-serif;
-    background: #e8f5e9;F
+    background: #e8f5e9;
     margin: 0;
     padding: 0;
     text-align: center;
@@ -38,7 +38,6 @@ body {
     width: 95%;
     max-width: 600px;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
     gap: 12px;
 }
 
@@ -67,16 +66,7 @@ body {
     from { box-shadow: 0 0 10px #a5d6a7; }
     to   { box-shadow: 0 0 20px #66bb6a; }
 }
-/* Confetti Canvas */
-#confettiCanvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-/* Collapsible How to Play Box */
+
 #howToPlayBox {
     width: 95%;
     max-width: 600px;
@@ -86,7 +76,6 @@ body {
     border: 2px solid #66bb6a;
     box-shadow: 0 0 10px rgba(0,0,0,0.08);
     overflow: hidden;
-    transition: all 0.3s ease;
 }
 
 #howToPlayHeader {
@@ -109,7 +98,6 @@ body {
     padding: 16px;
     font-size: 15px;
     line-height: 1.5;
-    color: #333;
     display: none;
 }
 
@@ -119,20 +107,6 @@ body {
 
 #howToPlayBox.open #howToPlayToggle {
     transform: rotate(180deg);
-}
-
-/* Explanations */
-#explanations {
-    margin: 20px auto;
-    padding: 20px;
-    width: 95%;
-    max-width: 600px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    text-align: left;
-    font-size: 16px;
-    line-height: 1.6;
 }
 </style>
 </head>
@@ -159,20 +133,20 @@ body {
 <script>
 /* FIXED SYNTAX — ALL TEXTS UNCHANGED */
 const positiveFields = [
-  ">6-footer sunk",
+  ">6 footer sunk",
   "Long and strong down the middle-Drive",
   "GIR Par 3",
   "GIR Par 4",
   "Par",
   "Bogey",
   "Birdie",
-  "Intentional draw",
-  "Intentional fade",
-  "Pitch to <4 m to pin",
+  "intentional draw",
+  "intentional fade",
+  "Pitch to < 4 m to pin",
   "Chip to <1 Putter length to pin",
   "Sand save (1Put)",
   "Should have used driver",
-  "Lousy but useful"
+  "lousy but useful"
 ];
 
 const negativeFields = [
@@ -184,70 +158,17 @@ const negativeFields = [
   "Still me",
   "Lady",
   "Rabbitkiller",
-  "Shooter - green overhit",
+  "shooter - green overhit",
   "Lip‑Out Legend",
-  "Ice on the ball-tee shot",
-  "Off the green",
+  "Ice on the ball - tee shot",
+  "off the green",
   "Should not have used driver",
-  "1 hole-2 penalty strokes",
+  "1 hole - 2 penalty strokes",
   "3 or more penalty strokes",
   "Ball in the water",
   "Tree hit"
 ];
-const descriptions = {
-  ">6 footer sunk": "holed a putt from more than 6 feet/ 1,80 meter  away",
-  "Long and strong down the middle – Drive": "A perfect tee shot with the driver",
-  "GIR Par 3": "Green in regulation on a Par 3", 
-  "GIR Par 4": "Green in regulation on a Par 4",
-  "Par": "score as written on the scorecard",
-  "Bogey": "one over Par",
-  "Birdie": "one under Par",
-  "Intentional draw": "successfully played a ballflight from the outside to the inside",
-  "Intentional fade": "successfully played a ballflight from the inside to the outside",
-  "Pitch to < 4 m to pin": "be within 4m to the pin after a pitch" ,
-  "Chip to <1 putter length to pin": "be within 1 putter lengh to the pin after a chip",
-  "Sand save (1 putt)": "only 1 Putt after a green bunker shot",
-  "Should have used driver": "very nice tee shot with iron or small wood, that would be even better with the driver",
-  "Lousy but useful": "terrible shot that sill ended in a nice position for the next shot",
-  "3‑putt": "3 Putts on the green to hole it" ,
-  "Sissy iron tee shot (Par 4/5 only)": "buhuuu, I feared of using the driver because I was scared of loosing the ball", 
-  "Slice Deluxe": "unintentional slice that ended far off the fairway, maybee even in the woods or out of bounds",
-  "Power Hook": "unintentional hook that ended far off the fairway, maybee even in the woods or out of bounds",
-  "Double Par": "jep, double trouble, e.g. a 6 on a Par 3",
-  "Still me": "oh dear - your shot was so short that it's your turn again",
-  "Lady" - "Tee shot so short it didn't even make it past the women's tee",
-  "Rabbitkiller" - "a tee shot so low it could almost hit a rabbit",
-  "Shooter – green overhit" - "unintentionally overshooting the green",
-  "Lip‑Out Legend" - "a ball that touches the rim of the hole but does not get in", 
-  "Ice on the ball" - "a teeshot so terribly high that it might touch the sky",
-  "Off the green" - "having a ball rolling off the green again after a pitch, chip or worse - Putt",
-  "Should not have used driver" - "well, wrong decision takíng the driver, should better have played safe",
-  "1 hole – 2 penalty strokes" - "as described - getting 2 penalty strokes on one hole",
-  "3 or more penalty strokes" - "getting 3 or morge penalty strokes in one round",
-  "Water finder" - "Loosing a aall in the water",
-  "Woody" - "hitting a tree"
-};
-<div id="gridSwitchBox" class="section-box">
-  <div id="gridSwitchHeader">
-    <span>🎛 Grid Size</span>
-  </div>
 
-  <div id="gridSwitchContent">
-    <label style="font-size:16px;">
-      <input type="radio" name="gridSize" value="5" checked>
-      5 × 5 Grid
-    </label><br>
-
-    <label style="font-size:16px;">
-      <input type="radio" name="gridSize" value="4">
-      4 × 4 Grid
-    </label>
-
-    <p style="font-size:13px; opacity:0.7; margin-top:10px;">
-      Choose your grid size before starting the round.
-    </p>
-  </div>
-</div>
 function generateBalancedFields(count) {
     const half = Math.floor(count / 2);
     const pos = [...positiveFields].sort(() => Math.random() - 0.5).slice(0, half);
