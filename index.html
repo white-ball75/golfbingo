@@ -68,8 +68,8 @@ body {
   from { box-shadow: 0 0 10px #a5d6a7; }
   to   { box-shadow: 0 0 20px #66bb6a; }
 }
-/* Bingo Prize Box */
-#bingoPrizeBox {
+/* Collapsible Prize Box */
+#prizeBox {
   width: 95%;
   max-width: 600px;
   margin: 20px auto;
@@ -77,10 +77,38 @@ body {
   border-radius: 12px;
   border: 2px solid #66bb6a;
   box-shadow: 0 0 10px rgba(0,0,0,0.08);
-  padding: 20px;
-  text-align: left;
-  font-size: 16px;
-  line-height: 1.6;
+  overflow: hidden;
+}
+
+#prizeHeader {
+  background: #e8f5e9;
+  padding: 14px;
+  font-size: 18px;
+  color: #2e7d32;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+#prizeToggle {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+#prizeContent {
+  padding: 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  display: none;
+}
+
+#prizeBox.open #prizeContent {
+  display: block;
+}
+
+#prizeBox.open #prizeToggle {
+  transform: rotate(180deg);
 }
 
 #bingoPrizeBox h3 {
@@ -170,21 +198,6 @@ body {
     </ul>
   </div>
 </div>
-
-  <!-- Bingo Prize Suggestions -->
-<div id="bingoPrizeBox">
-  <h3>Bingo Prize Ideas</h3>
-  <ul>
-    <li>🎁 Pot system (everyone pays in, winner takes the pot)</li>
-    <li>🍺 Drink at the clubhouse (paid by the loser)</li>
-    <li>🐦 Bingo mascot (small traveling trophy)</li>
-    <li>🏆 Honor point within the group</li>
-    <li>🎉 Surprise prize chosen by the group</li>
-  </ul>
-</div>
-
-<script>
-
 <script>
 /* Field definitions */
 const positiveFields = [
@@ -281,6 +294,50 @@ document.querySelectorAll("input[name='gridSize']").forEach(r =>
 
 /* Initial load */
 loadBingoGrid();
+
+  /* Collapsible Prize Box */
+#prizeBox {
+  width: 95%;
+  max-width: 600px;
+  margin: 20px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #66bb6a;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+#prizeHeader {
+  background: #e8f5e9;
+  padding: 14px;
+  font-size: 18px;
+  color: #2e7d32;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+#prizeToggle {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+#prizeContent {
+  padding: 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  display: none;
+}
+
+#prizeBox.open #prizeContent {
+  display: block;
+}
+
+#prizeBox.open #prizeToggle {
+  transform: rotate(180deg);
+}
+
 </script>
 
 </body>
