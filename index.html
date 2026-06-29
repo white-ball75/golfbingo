@@ -8,7 +8,7 @@
 <style>
 body {
     font-family: Arial, sans-serif;
-    background: #e8f5e9;
+    background: #e8f5e9;F
     margin: 0;
     padding: 0;
     text-align: center;
@@ -67,6 +67,51 @@ body {
     height: 100%;
     pointer-events: none;
 }
+/* Collapsible How to Play Box */
+#howToPlayBox {
+    width: 95%;
+    max-width: 600px;
+    margin: 20px auto;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 2px solid #66bb6a;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+#howToPlayHeader {
+    background: #e8f5e9;
+    padding: 14px;
+    font-size: 18px;
+    color: #2e7d32;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+#howToPlayToggle {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+#howToPlayContent {
+    padding: 16px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #333;
+    display: none; /* collapsed by default */
+}
+
+#howToPlayBox.open #howToPlayContent {
+    display: block;
+}
+
+#howToPlayBox.open #howToPlayToggle {
+    transform: rotate(180deg);
+}
 
 /* Explanations */
 #explanations {
@@ -87,11 +132,38 @@ body {
 <body>
 
 <div id="logo">⛳ Golf Bingo</div>
+<h1>⛳ The Fun Golf Bingo 🏌️‍♂️</h1>
+ <p style="font-size:13px; margin-top:4px; opacity:0.7;">
+    by White Ball Marketing
+  </p>
+<!-- Intro  -->
+<div class="section-box" style="text-align:center; line-height:1.4;">
+  <h2 style="margin:0; font-size:20px;">How to Play</h2>
+  <p style="margin-top:6px; font-size:14px;">
+    The Fun Golf Bingo turns every golf round into a fun, competitive challenge.<br>
+  </p>
+</div>
 
 <canvas id="confettiCanvas"></canvas>
 
 <!-- Bingo Grid -->
 <div id="bingoGrid"></div>
+
+<!-- Collapsible How to Play Box -->
+<div id="howToPlayBox" class="section-box">
+  <div id="howToPlayHeader">
+    <span>📘 How to Play</span>
+    <span id="howToPlayToggle">▼</span>
+  </div>
+
+  <div id="howToPlayContent">
+    <p>
+      Tap a field whenever the described golf moment happens.<br>
+      Five marked fields in a row — horizontally, vertically or diagonally — score a Bingo and win.
+    </p>
+  </div>
+</div>
+
 
 <!-- Explanations -->
 <div id="explanations">
@@ -168,6 +240,11 @@ function loadBingoGrid() {
         grid.appendChild(cell);
     });
 }
+/* Collapsible How to Play Box */
+document.getElementById("howToPlayHeader").onclick = () => {
+    const box = document.getElementById("howToPlayBox");
+    box.classList.toggle("open");
+};
 
 /* =========================
    Bingo Logic
