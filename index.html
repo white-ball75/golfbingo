@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Glen Cup Bingo</title>
+  <title>The Fun Golf Bingo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="manifest" href="manifest.json" />
 
@@ -207,7 +207,7 @@
 </head>
 <body>
 
-  <h1>⛳ Glen Cup Bingo 🏌️‍♂️</h1>
+  <h1>⛳ The Fun Golf Bingo 🏌️‍♂️</h1>
 
   <!-- Intro / How to Play -->
   <div class="section-box" style="text-align:center; line-height:1.4;">
@@ -215,12 +215,12 @@
     <p style="margin-top:6px; font-size:14px;">
       Glen Cup Bingo turns every golf round into a fun, competitive challenge.<br>
       Tap a field whenever the described golf moment happens.<br>
-      Five marked fields in a row — horizontally, vertically or diagonally — score a Bingo and win the pot.
+      Five marked fields in a row — horizontally, vertically or diagonally — score a Bingo and win!
     </p>
   </div>
 
   <!-- Optional Login -->
-  <div id="loginBox" class="section-box">
+  (bearbeitet< ) div id="loginBox" class="section-box">
     <h2 style="margin:0; font-size:18px;">Player Login (optional)</h2>
     <p style="margin-top:6px; font-size:13px;">
       Log in with your email and nickname to join groups and track your Bingo rounds.
@@ -228,7 +228,7 @@
     <input id="emailInput" type="email" placeholder="Email" style="width:100%; margin-top:8px; padding:6px;">
     <input id="nicknameInput" type="text" placeholder="Nickname" style="width:100%; margin-top:8px; padding:6px;">
     <button onclick="registerPlayer()" style="margin-top:10px; padding:8px 14px; border-radius:8px;">Register / Login</button>
-  </div>
+  </div (bearbeitet ">")
 
   <!-- Player Info + Active Group -->
   <div id="playerInfo" class="section-box" style="display:none;">
@@ -257,23 +257,7 @@
     </select>
   </div>
 
-  <!-- Pot System -->
-  <div class="pot-box">
-    <div><strong>Pot System (Variant B)</strong></div>
-    <div style="margin-top:4px;">
-      Players: <input type="number" id="players" min="1" value="4" />
-      Stake (€): <input type="number" id="stake" min="1" value="2" />
-      <button class="reset-btn" onclick="updatePot()">Update Pot</button>
-    </div>
-    <div style="margin-top:6px;">
-      Current Pot: <span class="pot-value" id="potValue">8 €</span>
-    </div>
-    <div style="margin-top:4px; font-size:12px; opacity:0.9;">
-      Rule: Press the relevant button once you have or will hit the matching shot at golf.<br>
-      Each player pays the stake into the pot. First Bingo wins the entire pot.<br>
-      – by White Ball Marketing Agency –
-    </div>
-  </div>
+
 
   <!-- Grid -->
   <div class="grid" id="grid"></div>
@@ -541,7 +525,7 @@ const db = firebase.firestore();
       bingoActive = false;
       cells.forEach(c => c.el.classList.remove("blink-gold"));
       buildGrid();
-      setStatus("New Bingo started. Pot remains unchanged.");
+      setStatus("New Bingo started.");
     }
 
     function updatePot() {
