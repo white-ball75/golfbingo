@@ -282,6 +282,18 @@ const descriptions = {
     </p>
   </div>
 </div>
+    
+function generateBalancedFields(count) {
+    const half = Math.floor(count / 2);
+
+    const shuffledPos = [...positiveFields].sort(() => Math.random() - 0.5);
+    const shuffledNeg = [...negativeFields].sort(() => Math.random() - 0.5);
+
+    const selectedPos = shuffledPos.slice(0, half);
+    const selectedNeg = shuffledNeg.slice(0, count - half);
+
+    return [...selectedPos, ...selectedNeg].sort(() => Math.random() - 0.5);
+}
 
 /* =========================
    Bingo Grid
@@ -290,19 +302,29 @@ function loadBingoGrid() {
     const grid = document.getElementById("bingoGrid");
     grid.innerHTML = "";
 
-    bingoItems.forEach(item => {
+    const gridSize = document.querySelector("input[name='gridSize']:checked").value;
+    const totalFields = gridSize * gridSize;
+
+    const fields = generateBalancedFields(totalFields);
+
+    grid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+
+    fields.forEach(item => {
         const cell = document.createElement("div");
         cell.className = "bingoCell";
         cell.textContent = item;
 
         cell.onclick = () => {
             cell.classList.toggle("active");
-            checkBingo();
+            checkBingo(gridSize);
         };
 
         grid.appendChild(cell);
     });
+
+    updateHowToPlayText(gridSize);
 }
+
 /* Collapsible How to Play Box */
 document.getElementById("howToPlayHeader").onclick = () => {
     const box = document.getElementById("howToPlayBox");
