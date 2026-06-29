@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Glen Cup Bingo</title>
+<title>Golf Bingo</title>
 
 <style>
     body {
@@ -143,6 +143,19 @@
         border: 1px solid #0f0;
         border-radius: 6px;
     }
+
+    /* Gewinn-Vorschläge */
+    #bingoPrizeBox {
+        margin: 20px auto;
+        padding: 20px;
+        width: 300px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        display: none;
+        font-size: 15px;
+        line-height: 1.5;
+    }
 </style>
 </head>
 
@@ -151,7 +164,7 @@
 <button id="debugToggle">Debug</button>
 <div id="debugPanel">DEBUG PANEL INITIALIZING...</div>
 
-<h1>⛳ Glen Cup Bingo 🏌️‍♂️</h1>
+<h1>⛳ Golf Bingo 🏌️‍♂️</h1>
 
 <!-- LOGIN -->
 <div id="loginBox">
@@ -175,6 +188,16 @@
 
 <!-- BINGO GRID -->
 <div id="bingoGrid"></div>
+
+<!-- Gewinn-Vorschläge -->
+<div id="bingoPrizeBox">
+    <h3>Bingo Gewinn Vorschläge</h3>
+    🎁 Pot-System (alle zahlen ein, Gewinner bekommt den Pot)<br>
+    🍺 Getränk im Clubhaus (vom Verlierer spendiert)<br>
+    🐦 Bingo-Maskottchen (kleiner Wanderpokal)<br>
+    🏆 Ehrenpunkt in der Gruppe<br>
+    🎉 Überraschungspreis nach Wahl der Gruppe<br>
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -208,6 +231,7 @@ auth.onAuthStateChanged(async user => {
         playerInfo.style.display = "none";
         groupBox.style.display = "none";
         bingoGrid.style.display = "none";
+        bingoPrizeBox.style.display = "none";
         return;
     }
 
@@ -226,6 +250,7 @@ auth.onAuthStateChanged(async user => {
 
     if (data.activeGroup) {
         loadBingoGrid();
+        bingoPrizeBox.style.display = "block";
     }
 });
 
@@ -288,6 +313,7 @@ async function createOrSelectGroup() {
     }, { merge: true });
 
     loadBingoGrid();
+    bingoPrizeBox.style.display = "block";
 }
 
 /* =========================
