@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,7 +58,7 @@ body {
     to   { box-shadow: 0 0 20px #66bb6a; }
 }
 
-/* Konfetti Canvas */
+/* Confetti Canvas */
 #confettiCanvas {
     position: fixed;
     top: 0;
@@ -68,7 +68,7 @@ body {
     pointer-events: none;
 }
 
-/* Erklärungen */
+/* Explanations */
 #explanations {
     margin: 20px auto;
     padding: 20px;
@@ -93,24 +93,24 @@ body {
 <!-- Bingo Grid -->
 <div id="bingoGrid"></div>
 
-<!-- Erklärungen -->
+<!-- Explanations -->
 <div id="explanations">
-    <h3>Spielerklärungen</h3>
-    <p>Markiere jedes Feld, sobald die entsprechende Situation während deiner Golfrunde passiert.</p>
-    <p>Bei einer vollständigen Reihe, Spalte oder Diagonale erhältst du ein Bingo!</p>
-    <p>Vorschläge für Bingo‑Gewinne:</p>
+    <h3>How to Play</h3>
+    <p>Tap a field whenever the corresponding situation happens during your golf round.</p>
+    <p>Complete a full row, column, or diagonal to score a Bingo!</p>
+    <p>Prize ideas:</p>
     <ul>
-        <li>🎁 Pot‑System (alle zahlen ein, Gewinner bekommt den Pot)</li>
-        <li>🍺 Getränk im Clubhaus</li>
-        <li>🐦 Bingo‑Maskottchen (Wanderpokal)</li>
-        <li>🏆 Ehrenpunkt in der Gruppe</li>
-        <li>🎉 Überraschungspreis</li>
+        <li>🎁 Pot system (everyone pays in, winner takes the pot)</li>
+        <li>🍺 Drink at the clubhouse</li>
+        <li>🐦 Bingo mascot (traveling trophy)</li>
+        <li>🏆 Honor point in your group</li>
+        <li>🎉 Surprise reward</li>
     </ul>
 </div>
 
 <script>
 /* =========================
-   Bingo Felder + Beschreibungen
+   Bingo Fields + Descriptions
    ========================= */
 const bingoItems = [
     "The Whisper", "The Escape Shot", "Safe Play", "Rabbit Hunter", "The Slice Deluxe",
@@ -121,35 +121,35 @@ const bingoItems = [
 ];
 
 const descriptions = {
-  "The Whisper": "Short but well placed.",
-  "The Escape Shot": "Wild slice but still playable.",
-  "Safe Play": "A conservative shot to avoid trouble.",
-  "Rabbit Hunter": "Chasing the ball after a mis-hit.",
-  "The Slice Deluxe": "A slice that goes further right than expected.",
-  "Triple‑Putt Shame": "Three putts on the green.",
-  "Desert Stormer": "Shot from a sandy or dry area.",
-  "Speedster Fade": "A fast fade with good distance.",
-  "Royal Driver": "A perfect drive straight down the fairway.",
-  "The Smooth One": "A clean, elegant shot.",
+  "The Whisper": "A soft, controlled shot that lands gently.",
+  "The Escape Shot": "A recovery shot from trouble — not pretty, but effective.",
+  "Safe Play": "A conservative shot to avoid hazards.",
+  "Rabbit Hunter": "Running after the ball after a mis-hit.",
+  "The Slice Deluxe": "A slice that curves dramatically to the right.",
+  "Triple‑Putt Shame": "Three putts on the green — painful.",
+  "Desert Stormer": "A shot played from dry or sandy terrain.",
+  "Speedster Fade": "A fast fade with solid distance.",
+  "Royal Driver": "A perfect, straight drive with authority.",
+  "The Smooth One": "A clean, elegant shot with perfect rhythm.",
   "Artist’s Draw": "A controlled draw around an obstacle.",
-  "Bunker General": "Strong bunker play.",
+  "Bunker General": "Confident and strong bunker play.",
   "Secret Satisfaction": "A shot that felt great but looked average.",
-  "Lost in Flight": "Ball disappears mid‑air.",
+  "Lost in Flight": "Ball disappears mid‑air — nobody knows where it went.",
   "Still You": "Ball barely moves after impact.",
-  "Blind Landing": "Shot lands out of sight.",
+  "Blind Landing": "Shot lands out of sight — surprise outcome.",
   "Hook Kid": "A hook that curves too far left.",
-  "Close Shave": "Barely avoided a hazard.",
-  "Ugly but Works": "Bad technique, good result.",
-  "Perfect Shot": "Exactly as intended.",
+  "Close Shave": "Barely avoided a hazard — lucky escape.",
+  "Ugly but Works": "Bad technique, surprisingly good result.",
+  "Perfect Shot": "Exactly as intended — textbook execution.",
   "Lip‑Out Legend": "Ball circles the hole but stays out.",
   "Long & Straight": "Drive with great length and accuracy.",
   "Far Off Landing": "Ball lands much farther than expected.",
-  "Short but Nasty": "Short shot with a bad result.",
+  "Short but Nasty": "Short shot with an unpleasant result.",
   "Should’ve Used Driver": "Regret after choosing the wrong club."
 };
 
 /* =========================
-   Bingo Grid erzeugen
+   Bingo Grid
    ========================= */
 function loadBingoGrid() {
     const grid = document.getElementById("bingoGrid");
@@ -170,7 +170,7 @@ function loadBingoGrid() {
 }
 
 /* =========================
-   Bingo Logik
+   Bingo Logic
    ========================= */
 function checkBingo() {
     const cells = [...document.querySelectorAll(".bingoCell")];
@@ -191,7 +191,7 @@ function checkBingo() {
 }
 
 /* =========================
-   Konfetti Animation
+   Confetti Animation
    ========================= */
 function launchConfetti() {
     const canvas = document.getElementById("confettiCanvas");
