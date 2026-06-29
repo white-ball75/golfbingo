@@ -7,106 +7,109 @@
 
 <style>
 body {
-    font-family: Arial, sans-serif;
-    background: #e8f5e9;
-    margin: 0;
-    padding: 0;
-    text-align: center;
+  font-family: Arial, sans-serif;
+  background: #e8f5e9;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
 #logo {
-    font-size: 36px;
-    margin-top: 20px;
-    color: #2e7d32;
-    font-weight: bold;
+  font-size: 36px;
+  margin-top: 20px;
+  color: #2e7d32;
+  font-weight: bold;
 }
 
+/* Grid switch box */
 #gridSwitchBox {
-    width: 95%;
-    max-width: 600px;
-    margin: 20px auto;
-    background: #ffffff;
-    border-radius: 12px;
-    border: 2px solid #66bb6a;
-    box-shadow: 0 0 10px rgba(0,0,0,0.08);
-    padding: 16px;
-    text-align: center;
+  width: 95%;
+  max-width: 600px;
+  margin: 20px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #66bb6a;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  padding: 16px;
+  text-align: center;
 }
 
+/* Bingo grid */
 #bingoGrid {
-    margin: 20px auto;
-    width: 95%;
-    max-width: 600px;
-    display: grid;
-    gap: 12px;
+  margin: 20px auto;
+  width: 95%;
+  max-width: 600px;
+  display: grid;
+  gap: 12px;
 }
 
 .bingoCell {
-    background: white;
-    padding: 18px;
-    border-radius: 12px;
-    border: 2px solid #66bb6a;
-    cursor: pointer;
-    font-size: 16px;
-    transition: transform 0.2s, background 0.2s;
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  border: 2px solid #66bb6a;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s, background 0.2s;
 }
 
 .bingoCell:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .bingoCell.active {
-    background: #43a047;
-    color: white;
-    border-color: #2e7d32;
-    animation: blink 0.6s ease-in-out infinite alternate;
+  background: #43a047;
+  color: white;
+  border-color: #2e7d32;
+  animation: blink 0.6s ease-in-out infinite alternate;
 }
 
 @keyframes blink {
-    from { box-shadow: 0 0 10px #a5d6a7; }
-    to   { box-shadow: 0 0 20px #66bb6a; }
+  from { box-shadow: 0 0 10px #a5d6a7; }
+  to   { box-shadow: 0 0 20px #66bb6a; }
 }
 
+/* How to Play box */
 #howToPlayBox {
-    width: 95%;
-    max-width: 600px;
-    margin: 20px auto;
-    background: #ffffff;
-    border-radius: 12px;
-    border: 2px solid #66bb6a;
-    box-shadow: 0 0 10px rgba(0,0,0,0.08);
-    overflow: hidden;
+  width: 95%;
+  max-width: 600px;
+  margin: 20px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #66bb6a;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  overflow: hidden;
 }
 
 #howToPlayHeader {
-    background: #e8f5e9;
-    padding: 14px;
-    font-size: 18px;
-    color: #2e7d32;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    cursor: pointer;
+  background: #e8f5e9;
+  padding: 14px;
+  font-size: 18px;
+  color: #2e7d32;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
 }
 
 #howToPlayToggle {
-    font-size: 18px;
-    transition: transform 0.3s ease;
+  font-size: 18px;
+  transition: transform 0.3s ease;
 }
 
 #howToPlayContent {
-    padding: 16px;
-    font-size: 15px;
-    line-height: 1.5;
-    display: none;
+  padding: 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  display: none;
 }
 
 #howToPlayBox.open #howToPlayContent {
-    display: block;
+  display: block;
 }
 
 #howToPlayBox.open #howToPlayToggle {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 </style>
 </head>
@@ -116,22 +119,22 @@ body {
 <div id="logo">⛳ Golf Bingo</div>
 
 <div id="gridSwitchBox">
-    <label><input type="radio" name="gridSize" value="5" checked> 5x5 Grid</label><br>
-    <label><input type="radio" name="gridSize" value="4"> 4x4 Grid</label>
+  <label><input type="radio" name="gridSize" value="5" checked> 5x5 Grid</label><br>
+  <label><input type="radio" name="gridSize" value="4"> 4x4 Grid</label>
 </div>
 
 <div id="howToPlayBox">
-    <div id="howToPlayHeader">
-        <span>📘 How to Play</span>
-        <span id="howToPlayToggle">▼</span>
-    </div>
-    <div id="howToPlayContent"></div>
+  <div id="howToPlayHeader">
+    <span>📘 How to Play</span>
+    <span id="howToPlayToggle">▼</span>
+  </div>
+  <div id="howToPlayContent"></div>
 </div>
 
 <div id="bingoGrid"></div>
 
 <script>
-/* FIXED SYNTAX — ALL TEXTS UNCHANGED */
+/* Field definitions */
 const positiveFields = [
   ">6 footer sunk",
   "Long and strong down the middle-Drive",
@@ -169,52 +172,58 @@ const negativeFields = [
   "Tree hit"
 ];
 
+/* Balanced random selection */
 function generateBalancedFields(count) {
-    const half = Math.floor(count / 2);
-    const pos = [...positiveFields].sort(() => Math.random() - 0.5).slice(0, half);
-    const neg = [...negativeFields].sort(() => Math.random() - 0.5).slice(0, count - half);
-    return [...pos, ...neg].sort(() => Math.random() - 0.5);
+  const half = Math.floor(count / 2);
+  const pos = [...positiveFields].sort(() => Math.random() - 0.5).slice(0, half);
+  const neg = [...negativeFields].sort(() => Math.random() - 0.5).slice(0, count - half);
+  return [...pos, ...neg].sort(() => Math.random() - 0.5);
 }
 
+/* Load grid */
 function loadBingoGrid() {
-    const grid = document.getElementById("bingoGrid");
-    const size = document.querySelector("input[name='gridSize']:checked").value;
-    const total = size * size;
+  const grid = document.getElementById("bingoGrid");
+  const size = parseInt(document.querySelector("input[name='gridSize']:checked").value);
+  const total = size * size;
 
-    grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
-    grid.innerHTML = "";
+  grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+  grid.innerHTML = "";
 
-    const fields = generateBalancedFields(total);
+  const fields = generateBalancedFields(total);
 
-    fields.forEach(item => {
-        const cell = document.createElement("div");
-        cell.className = "bingoCell";
-        cell.textContent = item;
-        cell.onclick = () => cell.classList.toggle("active");
-        grid.appendChild(cell);
-    });
+  fields.forEach(item => {
+    const cell = document.createElement("div");
+    cell.className = "bingoCell";
+    cell.textContent = item;
+    cell.onclick = () => cell.classList.toggle("active");
+    grid.appendChild(cell);
+  });
 
-    updateHowToPlayText(size);
+  updateHowToPlayText(size);
 }
 
+/* Dynamic How to Play text */
 function updateHowToPlayText(size) {
-    document.getElementById("howToPlayContent").innerHTML = `
-        <p>
-            Tap a field whenever the described golf moment happens.<br>
-            You selected a <strong>${size} × ${size}</strong> grid.<br>
-            Mark ${size} fields in a row — horizontally, vertically or diagonally — to score a Bingo and win.
-        </p>
-        <p style="font-size:13px; opacity:0.7;">by White Ball Marketing</p>
-    `;
+  document.getElementById("howToPlayContent").innerHTML = `
+    <p>
+      Tap a field whenever the described golf moment happens.<br>
+      You selected a <strong>${size} × ${size}</strong> grid.<br>
+      Mark ${size} fields in a row — horizontally, vertically or diagonally — to score a Bingo and win.
+    </p>
+    <p style="font-size:13px; opacity:0.7;">by White Ball Marketing</p>
+  `;
 }
 
+/* Collapsible How to Play */
 document.getElementById("howToPlayHeader").onclick = () =>
-    document.getElementById("howToPlayBox").classList.toggle("open");
+  document.getElementById("howToPlayBox").classList.toggle("open");
 
+/* Grid size change */
 document.querySelectorAll("input[name='gridSize']").forEach(r =>
-    r.onchange = loadBingoGrid
+  r.onchange = loadBingoGrid
 );
 
+/* Initial load */
 loadBingoGrid();
 </script>
 
