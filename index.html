@@ -91,7 +91,6 @@
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 8px;
-        display: none;
     }
 
     .bingoCell {
@@ -152,7 +151,6 @@
         background: #fff;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        display: none;
         font-size: 15px;
         line-height: 1.5;
     }
@@ -168,7 +166,7 @@
 
 <!-- LOGIN -->
 <div id="loginBox">
-    <h3>Login / Registrierung</h3>
+    <h3>Login / Registrierung (optional)</h3>
     <input id="emailInput" type="email" placeholder="E-Mail">
     <input id="nicknameInput" type="text" placeholder="Nickname">
     <button onclick="registerPlayer()">Login / Registrieren</button>
@@ -222,35 +220,36 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 /* =========================
-   AUTH HANDLING
+   LOGIN OPTIONAL
    ========================= */
 
 auth.onAuthStateChanged(async user => {
     if (!user) {
-        loginBox.style.display = "block";
-        playerInfo.style.display = "none";
-        groupBox.style.display = "none";
-        bingoGrid.style.display = "none";
-        bingoPrizeBox.style.display = "none";
+        // Login optional → Bingo bleibt sichtbar
         return;
     }
 
-    const doc = await db.collection("users").doc(user.uid).get();
+    const userRef = db.collection("users").doc(user.uid);
+    let doc = await userRef.get();
 
     if (!doc.exists) {
-        loginBox.style.display = "block";
-        return;
+        await userRef.set({
+            email: user.email,
+            nickname: user.email.split("@")[0],
+            groups: [],
+            activeGroup: ""
+        });
+        doc = await userRef.get();
     }
 
     const data = doc.data();
+
     playerNickname.textContent = data.nickname;
-    loginBox.style.display = "none";
     playerInfo.style.display = "block";
     groupBox.style.display = "block";
 
     if (data.activeGroup) {
         loadBingoGrid();
-        bingoPrizeBox.style.display = "block";
     }
 });
 
@@ -286,7 +285,6 @@ async function registerPlayer() {
     }, { merge: true });
 
     playerNickname.textContent = nickname;
-    loginBox.style.display = "none";
     playerInfo.style.display = "block";
     groupBox.style.display = "block";
 }
@@ -300,6 +298,11 @@ async function createOrSelectGroup() {
     if (!groupName) return;
 
     const user = auth.currentUser;
+    if (!user) {
+        alert("Bitte zuerst einloggen, um Gruppen zu nutzen.");
+        return;
+    }
+
     const uid = user.uid;
 
     await db.collection("groups").doc(groupName).set({
@@ -313,7 +316,6 @@ async function createOrSelectGroup() {
     }, { merge: true });
 
     loadBingoGrid();
-    bingoPrizeBox.style.display = "block";
 }
 
 /* =========================
@@ -332,9 +334,8 @@ const bingoItems = [
 
 function loadBingoGrid() {
     bingoGrid.innerHTML = "";
-    bingoGrid.style.display = "grid";
 
-    bingoItems.forEach((item, index) => {
+    bingoItems.forEach(item => {
         const cell = document.createElement("div");
         cell.className = "bingoCell";
         cell.textContent = item;
