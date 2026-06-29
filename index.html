@@ -205,7 +205,6 @@
 /* =========================
    Firebase Setup
    ========================= */
-
 const firebaseConfig = {
   apiKey: "AIzaSyBYbJf5foIHN215VYj-RtumPg-ZyQWzlgI",
   authDomain: "golf-bingo-24ad7.firebaseapp.com",
@@ -214,7 +213,6 @@ const firebaseConfig = {
   messagingSenderId: "183326579448",
   appId: "1:183326579448:web:d9a5117f56022e9ffa790d"
 };
-
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
@@ -222,158 +220,116 @@ const db = firebase.firestore();
 /* =========================
    LOGIN OPTIONAL
    ========================= */
-
 auth.onAuthStateChanged(async user => {
-    if (!user) {
-        // Login optional → Bingo bleibt sichtbar
-        return;
-    }
+  // Bingo immer sichtbar
+  loadBingoGrid();
+  bingoPrizeBox.style.display = "block";
 
-    const userRef = db.collection("users").doc(user.uid);
-    let doc = await userRef.get();
+  if (!user) return;
 
-    if (!doc.exists) {
-        await userRef.set({
-            email: user.email,
-            nickname: user.email.split("@")[0],
-            groups: [],
-            activeGroup: ""
-        });
-        doc = await userRef.get();
-    }
+  const userRef = db.collection("users").doc(user.uid);
+  let doc = await userRef.get();
 
-    const data = doc.data();
+  if (!doc.exists) {
+    await userRef.set({
+      email: user.email,
+      nickname: user.email.split("@")[0],
+      groups: [],
+      activeGroup: ""
+    });
+    doc = await userRef.get();
+  }
 
-    playerNickname.textContent = data.nickname;
-    playerInfo.style.display = "block";
-    groupBox.style.display = "block";
-
-    if (data.activeGroup) {
-        loadBingoGrid();
-    }
+  const data = doc.data();
+  playerNickname.textContent = data.nickname;
+  playerInfo.style.display = "block";
+  groupBox.style.display = "block";
 });
 
 /* =========================
-   REGISTRATION
+   REGISTRATION (Fix)
    ========================= */
-
 async function registerPlayer() {
-    const email = emailInput.value.trim();
-    const nickname = nicknameInput.value.trim();
+  const email = emailInput.value.trim();
+  const nickname = nicknameInput.value.trim();
+  if (!email || !nickname) {
+    alert("Bitte E-Mail und Nickname eingeben.");
+    return;
+  }
 
-    if (!email || !nickname) {
-        alert("Bitte E-Mail und Nickname eingeben.");
-        return;
-    }
+  const defaultPassword = "GlenCupDefaultPassword123";
+  let userCredential;
 
-    const defaultPassword = "GlenCupDefaultPassword123";
-    let userCredential;
+  try {
+    userCredential = await auth.signInWithEmailAndPassword(email, defaultPassword);
+  } catch {
+    userCredential = await auth.createUserWithEmailAndPassword(email, defaultPassword);
+  }
 
-    try {
-        userCredential = await auth.signInWithEmailAndPassword(email, defaultPassword);
-    } catch {
-        userCredential = await auth.createUserWithEmailAndPassword(email, defaultPassword);
-    }
+  const uid = userCredential.user.uid;
+  await db.collection("users").doc(uid).set({
+    email,
+    nickname,
+    groups: [],
+    activeGroup: ""
+  }, { merge: true });
 
-    const uid = userCredential.user.uid;
-
-    await db.collection("users").doc(uid).set({
-        email,
-        nickname,
-        groups: [],
-        activeGroup: ""
-    }, { merge: true });
-
-    playerNickname.textContent = nickname;
-    playerInfo.style.display = "block";
-    groupBox.style.display = "block";
+  // Auth-Status sofort aktualisieren
+  auth.updateCurrentUser(userCredential.user);
+  alert("Login erfolgreich!");
 }
 
 /* =========================
    GROUP HANDLING
    ========================= */
-
 async function createOrSelectGroup() {
-    const groupName = groupInput.value.trim();
-    if (!groupName) return;
+  const groupName = groupInput.value.trim();
+  if (!groupName) return;
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Bitte zuerst einloggen, um Gruppen zu nutzen.");
+    return;
+  }
 
-    const user = auth.currentUser;
-    if (!user) {
-        alert("Bitte zuerst einloggen, um Gruppen zu nutzen.");
-        return;
-    }
+  const uid = user.uid;
+  await db.collection("groups").doc(groupName).set({
+    name: groupName,
+    members: firebase.firestore.FieldValue.arrayUnion(uid)
+  }, { merge: true });
 
-    const uid = user.uid;
+  await db.collection("users").doc(uid).set({
+    activeGroup: groupName,
+    groups: firebase.firestore.FieldValue.arrayUnion(groupName)
+  }, { merge: true });
 
-    await db.collection("groups").doc(groupName).set({
-        name: groupName,
-        members: firebase.firestore.FieldValue.arrayUnion(uid)
-    }, { merge: true });
-
-    await db.collection("users").doc(uid).set({
-        activeGroup: groupName,
-        groups: firebase.firestore.FieldValue.arrayUnion(groupName)
-    }, { merge: true });
-
-    loadBingoGrid();
+  loadBingoGrid();
 }
 
 /* =========================
    BINGO GRID
    ========================= */
-
 const bingoItems = [
-    "Fairway getroffen", "Birdie Chance", "Sand Save", "Chip-in Versuch",
-    "Par gerettet", "Drive > 200m", "Putt gelocht", "Rough getroffen",
-    "Wasserhindernis", "Bunker getroffen", "Green in Regulation",
-    "Up & Down", "Bogey", "Double Bogey", "Fette Kugel",
-    "Slice", "Hook", "Topper", "Ball verloren", "Neuer Ball",
-    "Pitch gelungen", "Chip gelungen", "Putt knapp vorbei",
-    "Drive verzogen", "Lucky Bounce"
+  "Fairway getroffen", "Birdie Chance", "Sand Save", "Chip-in Versuch",
+  "Par gerettet", "Drive > 200m", "Putt gelocht", "Rough getroffen",
+  "Wasserhindernis", "Bunker getroffen", "Green in Regulation",
+  "Up & Down", "Bogey", "Double Bogey", "Fette Kugel",
+  "Slice", "Hook", "Topper", "Ball verloren", "Neuer Ball",
+  "Pitch gelungen", "Chip gelungen", "Putt knapp vorbei",
+  "Drive verzogen", "Lucky Bounce"
 ];
 
 function loadBingoGrid() {
-    bingoGrid.innerHTML = "";
-
-    bingoItems.forEach(item => {
-        const cell = document.createElement("div");
-        cell.className = "bingoCell";
-        cell.textContent = item;
-
-        cell.onclick = () => {
-            cell.classList.toggle("active");
-        };
-
-        bingoGrid.appendChild(cell);
-    });
+  bingoGrid.innerHTML = "";
+  bingoGrid.style.display = "grid";
+  bingoItems.forEach(item => {
+    const cell = document.createElement("div");
+    cell.className = "bingoCell";
+    cell.textContent = item;
+    cell.onclick = () => cell.classList.toggle("active");
+    bingoGrid.appendChild(cell);
+  });
 }
-
-/* =========================
-   DEBUG PANEL
-   ========================= */
-
-debugToggle.addEventListener("click", () => {
-  debugPanel.style.display = debugPanel.style.display === "none" ? "block" : "none";
-});
-
-async function updateDebugPanel() {
-  let output = "[DEBUG]\n";
-
-  const user = auth.currentUser;
-
-  output += "Firebase: CONNECTED\n";
-  output += user ? "Auth User: " + user.email + "\n" : "Auth User: none\n";
-
-  if (user) {
-    const doc = await db.collection("users").doc(user.uid).get();
-    output += doc.exists ? "UserDoc: FOUND\n" : "UserDoc: MISSING\n";
-  }
-
-  debugPanel.textContent = output;
-}
-
-setInterval(updateDebugPanel, 1500);
-
 </script>
+
 </body>
 </html>
