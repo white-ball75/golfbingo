@@ -21,6 +21,18 @@ body {
     color: #2e7d32;
     font-weight: bold;
 }
+/* Grid Switch Box */
+#gridSwitchBox {
+    width: 95%;
+    max-width: 600px;
+    margin: 20px auto;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 2px solid #66bb6a;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    padding: 16px;
+    text-align: center;
+}
 
 /* Bingo Grid */
 #bingoGrid {
@@ -184,13 +196,43 @@ body {
 /* =========================
    Bingo Fields + Descriptions
    ========================= */
-const bingoItems = [
-    "The Whisper", "The Escape Shot", "Safe Play", "Rabbit Hunter", "The Slice Deluxe",
-    "Triple‑Putt Shame", "Desert Stormer", "Speedster Fade", "Royal Driver", "The Smooth One",
-    "Artist’s Draw", "Bunker General", "Secret Satisfaction", "Lost in Flight", "Still You",
-    "Blind Landing", "Hook Kid", "Close Shave", "Ugly but Works", "Perfect Shot",
-    "Lip‑Out Legend", "Long & Straight", "Far Off Landing", "Short but Nasty", "Should’ve Used Driver"
+const positiveFields = [
+  ">6 footer sunk",
+  "Long and strong down the middle – Drive",
+  "GIR Par 3",
+  "GIR Par 4",
+  "Par",
+  "Bogey",
+  "Birdie",
+  "Intentional draw",
+  "Intentional fade",
+  "Pitch to < 4 m to pin",
+  "Chip to <1 putter length to pin",
+  "Sand save (1 putt)",
+  "Should have used driver",
+  "Lousy but useful"
 ];
+
+const negativeFields = [
+  "3‑putt",
+  "Sissy iron tee shot (Par 4/5 only)",
+  "Slice Deluxe",
+  "Power Hook",
+  "Double Par",
+  "Still me",
+  "Lady",
+  "Rabbitkiller",
+  "Shooter – green overhit",
+  "Lip‑Out Legend",
+  "Ice on the ball – tee shot",
+  "Off the green",
+  "Should not have used driver",
+  "1 hole – 2 penalty strokes",
+  "3 or more penalty strokes",
+  "Ball in the water",
+  "Tree hit"
+];
+
 
 const descriptions = {
   "The Whisper": "A soft, controlled shot that lands gently.",
@@ -219,6 +261,27 @@ const descriptions = {
   "Short but Nasty": "Short shot with an unpleasant result.",
   "Should’ve Used Driver": "Regret after choosing the wrong club."
 };
+<div id="gridSwitchBox" class="section-box">
+  <div id="gridSwitchHeader">
+    <span>🎛 Grid Size</span>
+  </div>
+
+  <div id="gridSwitchContent">
+    <label style="font-size:16px;">
+      <input type="radio" name="gridSize" value="5" checked>
+      5 × 5 Grid
+    </label><br>
+
+    <label style="font-size:16px;">
+      <input type="radio" name="gridSize" value="4">
+      4 × 4 Grid
+    </label>
+
+    <p style="font-size:13px; opacity:0.7; margin-top:10px;">
+      Choose your grid size before starting the round.
+    </p>
+  </div>
+</div>
 
 /* =========================
    Bingo Grid
