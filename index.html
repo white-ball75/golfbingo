@@ -386,6 +386,9 @@ function checkBingo() {
         }
     }
 }
+document.querySelectorAll("input[name='gridSize']").forEach(radio => {
+    radio.onchange = () => loadBingoGrid();
+});
 
 /* =========================
    Confetti Animation
