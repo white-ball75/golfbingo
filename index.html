@@ -68,7 +68,28 @@ body {
   from { box-shadow: 0 0 10px #a5d6a7; }
   to   { box-shadow: 0 0 20px #66bb6a; }
 }
+/* Bingo Prize Box */
+#bingoPrizeBox {
+  width: 95%;
+  max-width: 600px;
+  margin: 20px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #66bb6a;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  padding: 20px;
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.6;
+}
 
+#bingoPrizeBox h3 {
+  color: #2e7d32;
+  margin-top: 0;
+  text-align: center;
+}
+
+  
 /* How to Play box */
 #howToPlayBox {
   width: 95%;
@@ -132,6 +153,37 @@ body {
 </div>
 
 <div id="bingoGrid"></div>
+<!-- Collapsible Prize Box -->
+<div id="prizeBox" class="section-box">
+  <div id="prizeHeader">
+    <span>🎁 Bingo Prize Ideas</span>
+    <span id="prizeToggle">▼</span>
+  </div>
+
+  <div id="prizeContent">
+    <ul>
+      <li>Pot system (everyone pays in, winner takes the pot)</li>
+      <li>Drink at the clubhouse (paid by the loser)</li>
+      <li>Bingo mascot (small traveling trophy)</li>
+      <li>Honor point within the group</li>
+      <li>Surprise prize chosen by the group</li>
+    </ul>
+  </div>
+</div>
+
+  <!-- Bingo Prize Suggestions -->
+<div id="bingoPrizeBox">
+  <h3>Bingo Prize Ideas</h3>
+  <ul>
+    <li>🎁 Pot system (everyone pays in, winner takes the pot)</li>
+    <li>🍺 Drink at the clubhouse (paid by the loser)</li>
+    <li>🐦 Bingo mascot (small traveling trophy)</li>
+    <li>🏆 Honor point within the group</li>
+    <li>🎉 Surprise prize chosen by the group</li>
+  </ul>
+</div>
+
+<script>
 
 <script>
 /* Field definitions */
@@ -215,6 +267,10 @@ function updateHowToPlayText(size) {
 }
 
 /* Collapsible How to Play */
+  /* Collapsible Prize Box */
+document.getElementById("prizeHeader").onclick = () =>
+  document.getElementById("prizeBox").classList.toggle("open");
+
 document.getElementById("howToPlayHeader").onclick = () =>
   document.getElementById("howToPlayBox").classList.toggle("open");
 
