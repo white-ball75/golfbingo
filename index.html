@@ -174,25 +174,49 @@ button {
   text-align: center;
 }
 
-/* Paper Verions */
-#paperversionsBox {
+/* Collapsible Paper Order Box */
+#paperOrderBox {
   width: 95%;
   max-width: 700px;
-  margin: 16px auto 24px;
+  margin: 20px auto;
   background: #ffffff;
   border-radius: 12px;
   border: 2px solid #66bb6a;
   box-shadow: 0 0 10px rgba(0,0,0,0.08);
-  padding: 16px;
-  text-align: left;
-  font-size: 15px;
-  line-height: 1.6;
+  overflow: hidden;
 }
-#paperversionsBox h3 {
-  margin-top: 0;
+
+#paperOrderHeader {
+  background: #e8f5e9;
+  padding: 14px;
+  font-size: 18px;
   color: #2e7d32;
-  text-align: center;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
 }
+
+#paperOrderToggle {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+#paperOrderContent {
+  padding: 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  display: none;
+}
+
+#paperOrderBox.open #paperOrderContent {
+  display: block;
+}
+
+#paperOrderBox.open #paperOrderToggle {
+  transform: rotate(180deg);
+}
+
   
 /* Language selector placeholder */
 #languageBox {
@@ -277,18 +301,53 @@ button {
   </ul>
   </div>
  
-  <!-- Paper versions -->
-<div id="paperversions">
-  <p style="margin-top:12px;">
-    <h3>Order paper versions</h3>
-    You prefer playing a paper version?<br><br>
-    Option 1: 4×4 grid<br>
-    Option 2: 5×5 grid<br>
-    Option 3: 4×4 and 5×5 grid<br><br>
-    Order here: <a href="#" target="_blank">Order page (coming soon)</a><br>
+ <!-- Collapsible Paper Order Box -->
+<div id="paperOrderBox" class="section-box">
+  <div id="paperOrderHeader">
+    <span>📦 Paper Version – Order Options</span>
+    <span id="paperOrderToggle">▼</span>
+  </div>
 
-  </p>
+  <div id="paperOrderContent">
+    <p>You prefer playing a paper version?</p>
+
+    <p><strong>Option 1: 4×4 grid</strong><br>
+      Quantities: 20 (24 pages), 50 (54 pages), 100 (104 pages)
+    </p>
+
+    <p><strong>Option 2: 5×5 grid</strong><br>
+      Quantities: 20 (24 pages), 50 (54 pages), 100 (104 pages)
+    </p>
+
+    <p><strong>Option 3: Mixed 4×4 and 5×5 grids</strong><br>
+      Quantities: 20 (24 pages), 50 (54 pages), 100 (104 pages)
+    </p>
+
+    <p>
+      <strong>Order here:</strong><br>
+      <a href="#" target="_blank">Order page (coming soon)</a>
+    </p>
+
+    <p>
+      Shipping from Germany.<br>
+      Payment methods: Mastercard, Visa, PayPal, Apple Pay, Google Pay.
+    </p>
+
+    <p><strong>Paper version specs:</strong><br>
+      Size: 9 × 15 cm<br>
+      Cover: 160 g coated paper<br>
+      Back: 200 g cardboard<br>
+      Page 1: How to play<br>
+      Page 2: Field explanations (alphabetical)<br>
+      Other pages: Bingo grids (tear‑out line)
+    </p>
+
+    <p>
+      Binding: Clip on the top, covered with tape.
+    </p>
+  </div>
 </div>
+
 
 <script>
 /* =========================
@@ -472,6 +531,10 @@ document.getElementById("howToPlayHeader").onclick = () =>
 document.getElementById("explanationsHeader").onclick = () =>
   document.getElementById("explanationsBox").classList.toggle("open");
 
+/* Collapsible Paper Order Box */
+document.getElementById("paperOrderHeader").onclick = () =>
+  document.getElementById("paperOrderBox").classList.toggle("open");
+  
 /* Explanations content (alphabetical) */
 function loadExplanations() {
   const container = document.getElementById("explanationsContent");
