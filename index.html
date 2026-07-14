@@ -3,7 +3,482 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Golf Bingo</title>
+<title>Copilot 1 – Golf Bingo</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #e8f5e9;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* Header */
+#logo {
+  margin-top: 20px;
+  font-size: 32px;
+  font-weight: bold;
+  color: #2e7d32;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  text-transform: uppercase;
+}
+#logo span.icon {
+  font-size: 28px;
+}
+#subtitle {
+  font-size: 14px;
+  margin-top: 4px;
+  color: #555;
+}
+
+/* Section boxes */
+.section-box {
+  width: 95%;
+  max-width: 700px;
+  margin: 16px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #66bb6a;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+/* Collapsible How to Play */
+#howToPlayHeader,
+#explanationsHeader {
+  background: #e8f5e9;
+  padding: 12px 16px;
+  font-size: 18px;
+  color: #2e7d32;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+#howToPlayToggle,
+#explanationsToggle {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+#howToPlayContent,
+#explanationsContent {
+  padding: 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: left;
+  display: none;
+}
+.section-box.open #howToPlayContent,
+.section-box.open #explanationsContent {
+  display: block;
+}
+.section-box.open #howToPlayToggle,
+.section-box.open #explanationsToggle {
+  transform: rotate(180deg);
+}
+
+/* Controls */
+#controlsBox {
+  width: 95%;
+  max-width: 700px;
+  margin: 16px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #66bb6a;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  padding: 12px 16px;
+  text-align: center;
+  font-size: 15px;
+}
+#controlsBox label {
+  margin: 0 8px;
+}
+button {
+  margin-top: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: #2e7d32;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Bingo grid */
+#bingoGrid {
+  margin: 20px auto;
+  width: 95%;
+  max-width: 700px;
+  display: grid;
+  gap: 10px;
+}
+.bingoCell {
+  background: #ffffff;
+  padding: 14px;
+  border-radius: 10px;
+  border: 2px solid #66bb6a;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 60px;
+  transition: transform 0.2s, background 0.2s;
+}
+.bingoCell:hover {
+  transform: scale(1.03);
+}
+.bingoCell.active {
+  background: #43a047;
+  color: #ffffff;
+  border-color: #2e7d32;
+  animation: blink 0.6s ease-in-out infinite alternate;
+}
+@keyframes blink {
+  from { box-shadow: 0 0 8px #a5d6a7; }
+  to   { box-shadow: 0 0 16px #66bb6a; }
+}
+
+/* Confetti */
+#confettiCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Prize box */
+#prizeBox {
+  width: 95%;
+  max-width: 700px;
+  margin: 16px auto 24px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #66bb6a;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  padding: 16px;
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.6;
+}
+#prizeBox h3 {
+  margin-top: 0;
+  color: #2e7d32;
+  text-align: center;
+}
+
+/* Language selector placeholder */
+#languageBox {
+  margin-top: 8px;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="confettiCanvas"></canvas>
+
+<div id="logo">
+  <span class="icon">⛳</span>
+  <span>GOLF BINGO</span>
+  <span class="icon">🏌️‍♂️</span>
+</div>
+<div id="subtitle">by White Ball Marketing</div>
+
+<div id="languageBox">
+  Language (coming soon): English · Deutsch · Svenska · Français · Español
+</div>
+
+<!-- How to Play (collapsible) -->
+<div id="howToPlayBox" class="section-box open">
+  <div id="howToPlayHeader">
+    <span>📘 How to Play</span>
+    <span id="howToPlayToggle">▼</span>
+  </div>
+  <div id="howToPlayContent">
+    <p>
+      Turns every buddy golf round into a fun, competitive challenge.<br><br>
+      You decide with the buddies what you want to play for:
+      a drink at hole 19, a pot or just the fun – whatever you like.<br><br>
+      Decide if you want to play the smaller 4×4 version or the original 5×5 grid.<br><br>
+      If you register you can create your own teams and follow the results of the others (feature planned).<br><br>
+      You can reset your own grid anytime and start again with a fresh, randomly shuffled grid.
+    </p>
+    <p>
+      Tap a field whenever the described golf moment happens.<br>
+      All fields marked in a row – horizontally, vertically or diagonally – score a BINGO and win.<br>
+      Just shout it out!
+    </p>
+    <p><strong>Let’s start!</strong></p>
+  </div>
+</div>
+
+<!-- Controls -->
+<div id="controlsBox">
+  <div>
+    <strong>Grid size:</strong>
+    <label><input type="radio" name="gridSize" value="5" checked> 25 field grid (5×5)</label>
+    <label><input type="radio" name="gridSize" value="4"> 16 field grid (4×4)</label>
+  </div>
+  <div>
+    <button id="resetButton">Reset grid</button>
+  </div>
+</div>
+
+<!-- Bingo grid -->
+<div id="bingoGrid"></div>
+
+<!-- Field explanations (collapsible, alphabetical) -->
+<div id="explanationsBox" class="section-box">
+  <div id="explanationsHeader">
+    <span>🔍 Field explanations (alphabetical)</span>
+    <span id="explanationsToggle">▼</span>
+  </div>
+  <div id="explanationsContent"></div>
+</div>
+
+<!-- Prize suggestions -->
+<div id="prizeBox">
+  <h3>Bingo prize ideas</h3>
+  <ul>
+    <li>Pot system (everyone pays in, winner takes the pot)</li>
+    <li>Drink at the clubhouse (paid by the loser)</li>
+    <li>Bingo mascot (small traveling trophy)</li>
+    <li>Honor point within the group</li>
+    <li>Surprise prize chosen by the group</li>
+  </ul>
+  <p style="margin-top:12px;">
+    You prefer playing a paper version?<br><br>
+    Option 1: 4×4 grid – quantities: 20, 50, 100<br>
+    Option 2: 5×5 grid – quantities: 20, 50, 100<br>
+    Option 3: 4×4 and 5×5 grid – quantities: 20, 50, 100<br><br>
+    Order here: <a href="#" target="_blank">Order page (coming soon)</a><br>
+    Shipping from Germany. Payment methods: Mastercard, Visa, PayPal, Apple Pay, Google Pay.
+  </p>
+</div>
+
+<script>
+/* =========================
+   Bingo Fields + Descriptions
+   ========================= */
+const positiveFields = [
+  ">6-footer sunk",
+  "Long and strong down the middle – Drive",
+  "GIR Par 3",
+  "GIR Par 4",
+  "Par",
+  "Bogey",
+  "Birdie",
+  "Intentional draw",
+  "Intentional fade",
+  "Pitch to < 4 m to pin",
+  "Chip to <1 putter length to pin",
+  "Sand save (1 Put)",
+  "Should have used driver",
+  "Lousy but useful"
+];
+
+const negativeFields = [
+  "3‑Put",
+  "Sissy iron tee shot (Par 4/5 only)",
+  "Slice Deluxe",
+  "Power Hook",
+  "Double Par",
+  "Still me",
+  "Lady",
+  "Rabbitkiller",
+  "Shooter – green overhit",
+  "Lip‑Out Legend",
+  "Ice on the ball – tee shot",
+  "Off the green",
+  "Should not have used driver",
+  "1 hole – 2 penalty strokes",
+  "3 or more penalty strokes",
+  "Water finder",
+  "Woody"
+];
+
+const descriptions = {
+  ">6-footer sunk": "Holed a putt from more than 6 feet / 1.80 m away.",
+  "Long and strong down the middle – Drive": "A perfect tee shot with the driver.",
+  "GIR Par 3": "Green in regulation on a Par 3.",
+  "GIR Par 4": "Green in regulation on a Par 4.",
+  "Par": "Score as written on the scorecard.",
+  "Bogey": "One over par.",
+  "Birdie": "One under par.",
+  "Intentional draw": "Successfully played a ball flight from the outside to the inside.",
+  "Intentional fade": "Successfully played a ball flight from the inside to the outside.",
+  "Pitch to < 4 m to pin": "Be within 4 m to the pin after a pitch.",
+  "Chip to <1 putter length to pin": "Be within 1 putter length to the pin after a chip.",
+  "Sand save (1 Put)": "Only 1 putt after a green bunker shot.",
+  "Should have used driver": "Very nice tee shot with iron or small wood that would be even better with the driver.",
+  "Lousy but useful": "Terrible shot that still ended in a nice position for the next shot.",
+  "3‑Put": "Three putts on the green to hole it.",
+  "Sissy iron tee shot (Par 4/5 only)": "Feared using the driver because of losing the ball.",
+  "Slice Deluxe": "Unintentional slice that ended far off the fairway, maybe in the woods or out of bounds.",
+  "Power Hook": "Unintentional hook that ended far off the fairway, maybe in the woods or out of bounds.",
+  "Double Par": "Double trouble, e.g. a 6 on a Par 3.",
+  "Still me": "Shot was so short that it's your turn again.",
+  "Lady": "Tee shot so short it didn't even make it past the women's tee.",
+  "Rabbitkiller": "A tee shot so low it could almost hit a rabbit.",
+  "Shooter – green overhit": "Unintentionally overshooting the green.",
+  "Lip‑Out Legend": "Ball touches the rim of the hole but does not drop.",
+  "Ice on the ball – tee shot": "A tee shot so terribly high that it might touch the sky.",
+  "Off the green": "Ball rolling off the green again after a pitch, chip or putt.",
+  "Should not have used driver": "Wrong decision taking the driver, should have played safe.",
+  "1 hole – 2 penalty strokes": "Getting 2 penalty strokes on one hole.",
+  "3 or more penalty strokes": "Getting 3 or more penalty strokes in one round.",
+  "Water finder": "Losing a ball in the water.",
+  "Woody": "Hitting a tree."
+};
+
+/* Balanced random mix */
+function generateBalancedFields(count) {
+  const half = Math.floor(count / 2);
+  const pos = [...positiveFields].sort(() => Math.random() - 0.5).slice(0, half);
+  const neg = [...negativeFields].sort(() => Math.random() - 0.5).slice(0, count - half);
+  return [...pos, ...neg].sort(() => Math.random() - 0.5);
+}
+
+/* Grid + Bingo logic */
+function loadBingoGrid() {
+  const grid = document.getElementById("bingoGrid");
+  const size = parseInt(document.querySelector("input[name='gridSize']:checked").value, 10);
+  const total = size * size;
+
+  grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+  grid.innerHTML = "";
+
+  const fields = generateBalancedFields(total);
+
+  fields.forEach((item, index) => {
+    const cell = document.createElement("div");
+    cell.className = "bingoCell";
+    cell.textContent = item;
+    cell.dataset.index = index;
+    cell.onclick = () => {
+      cell.classList.toggle("active");
+      checkBingo(size);
+    };
+    grid.appendChild(cell);
+  });
+}
+
+function checkBingo(size) {
+  const cells = [...document.querySelectorAll(".bingoCell")];
+  const active = cells.map(c => c.classList.contains("active"));
+  const lines = [];
+
+  // rows
+  for (let r = 0; r < size; r++) {
+    lines.push([...Array(size).keys()].map(i => r * size + i));
+  }
+  // cols
+  for (let c = 0; c < size; c++) {
+    lines.push([...Array(size).keys()].map(i => i * size + c));
+  }
+  // diagonals
+  lines.push([...Array(size).keys()].map(i => i * size + i));
+  lines.push([...Array(size).keys()].map(i => (i + 1) * size - (i + 1)));
+
+  for (const line of lines) {
+    if (line.every(i => active[i])) {
+      launchConfetti();
+      alert("BINGO! Restarting grid in a moment…");
+      setTimeout(() => loadBingoGrid(), 8000);
+      return;
+    }
+  }
+}
+
+/* Confetti */
+function launchConfetti() {
+  const canvas = document.getElementById("confettiCanvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const confetti = [];
+  for (let i = 0; i < 180; i++) {
+    confetti.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 6 + 2,
+      c: `hsl(${Math.random() * 360}, 100%, 50%)`,
+      s: Math.random() * 3 + 2
+    });
+  }
+
+  let duration = 8000;
+  const start = performance.now();
+
+  function draw(now) {
+    const elapsed = now - start;
+    if (elapsed > duration) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    confetti.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.c;
+      ctx.fill();
+      p.y += p.s;
+      if (p.y > canvas.height) p.y = -10;
+    });
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+}
+
+/* Collapsibles */
+document.getElementById("howToPlayHeader").onclick = () =>
+  document.getElementById("howToPlayBox").classList.toggle("open");
+
+document.getElementById("explanationsHeader").onclick = () =>
+  document.getElementById("explanationsBox").classList.toggle("open");
+
+/* Explanations content (alphabetical) */
+function loadExplanations() {
+  const container = document.getElementById("explanationsContent");
+  const entries = Object.entries(descriptions).sort((a, b) =>
+    a[0].localeCompare(b[0])
+  );
+  container.innerHTML = entries
+    .map(([field, text]) => `<p><strong>${field}:</strong> ${text}</p>`)
+    .join("");
+}
+
+/* Controls */
+document.querySelectorAll("input[name='gridSize']").forEach(radio => {
+  radio.onchange = () => loadBingoGrid();
+});
+
+document.getElementById("resetButton").onclick = () => loadBingoGrid();
+
+/* Init */
+loadBingoGrid();
+loadExplanations();
+</script>
+
+</body>
+</html>
+``````html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copilot 1 – Golf Bingo</title>
 
 <style>
 body {
