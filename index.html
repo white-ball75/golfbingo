@@ -261,46 +261,91 @@ button {
   </div>
 
   <!-- How to Play (collapsible) -->
-  <div id="howToPlayBox" class="section-box">
-    <div id="howToPlayHeader">
-      <span></span>
-      <span id="howToPlayToggle">▼</span>
-    </div>
-    <div id="howToPlayContent"></div>
+<div id="howToPlayBox" class="section-box open">
+  <div id="howToPlayHeader">
+    <span>📘 How to Play</span>
+    <span id="howToPlayToggle">▼</span>
+  </div>
+  <div id="howToPlayContent">
+    <p>
+      Turns every buddy golf round into a fun, competitive challenge.<br><br>
+      You decide with the buddies what you want to play for:
+      a drink at hole 19, a pot or just the fun – whatever you like.<br><br>
+      Decide if you want to play the smaller 4×4 version or the original 5×5 grid.<br><br>
+      If you register you can create your own teams and follow the results of the others (feature planned).<br><br>
+      You can reset your own grid anytime and start again with a fresh, randomly shuffled grid.
+    </p>
+    <p>
+      Tap a field whenever the described golf moment happens.<br>
+      All fields marked in a row – horizontally, vertically or diagonally – score a BINGO and win.<br>
+      Just shout it out!
+    </p>
+    <p><strong>Let’s start!</strong></p>
+  </div>
+</div>
+
+<!-- Controls -->
+<div id="controlsBox">
+  <div>
+    <strong>Grid size:</strong>
+    <label><input type="radio" name="gridSize" value="5" checked> 25 field grid (5×5)</label>
+    <label><input type="radio" name="gridSize" value="4"> 16 field grid (4×4)</label>
+  </div>
+  <div>
+    <button id="resetButton">Reset grid</button>
+  </div>
+</div>
+
+<!-- Bingo grid -->
+<div id="bingoGrid"></div>
+
+<!-- Field explanations (collapsible, alphabetical) -->
+<div id="explanationsBox" class="section-box">
+  <div id="explanationsHeader">
+    <span>🔍 Field explanations (alphabetical)</span>
+    <span id="explanationsToggle">▼</span>
+  </div>
+  <div id="explanationsContent"></div>
+</div>
+
+<!-- Prize suggestions -->
+<div id="prizeBox">
+  <h3>Bingo prize ideas</h3>
+  <ul>
+    <li>Pot system (everyone pays in, winner takes the pot)</li>
+    <li>Drink at the clubhouse (paid by the loser)</li>
+    <li>Bingo mascot (small traveling trophy)</li>
+    <li>Honor point within the group</li>
+    <li>Surprise prize chosen by the group</li>
+  </ul>
+  </div>
+ 
+ <!-- Collapsible Paper Order Box -->
+<div id="paperOrderBox" class="section-box">
+  <div id="paperOrderHeader">
+    <span>📦 Paper Version – Order Options</span>
+    <span id="paperOrderToggle">▼</span>
   </div>
 
-  <!-- Controls -->
-  <div id="controlsBox">
-    <div>
-      <strong>Grid size:</strong>
-      <label><input type="radio" name="gridSize" value="5" checked> 25 field grid (5×5)</label>
-      <label><input type="radio" name="gridSize" value="4"> 16 field grid (4×4)</label>
-    </div>
-    <div>
-      <button id="resetButton">Reset grid</button>
-    </div>
-  </div>
+  <div id="paperOrderContent">
+    <p>You prefer playing a paper version?</p>
 
-  <!-- Bingo Grid (ONLY ONE!) -->
-  <div id="bingoGrid"></div>
+    <p><strong>Option 1: 4×4 grid</strong><br>
+    </p>
 
-  <!-- Field explanations (collapsible) -->
-  <div id="explanationsBox" class="section-box">
-    <div id="explanationsHeader">
-      <span></span>
-      <span id="explanationsToggle">▼</span>
-    </div>
-    <div id="explanationsContent"></div>
-  </div>
+    <p><strong>Option 2: 5×5 grid</strong><br>
+    </p>
 
-  <!-- Paper Order (collapsible) -->
-  <div id="paperOrderBox" class="section-box">
-    <div id="paperOrderHeader">
-      <span></span>
-      <span id="paperOrderToggle">▼</span>
-    </div>
-    <div id="paperOrderContent"></div>
+    <p><strong>Option 3: Mixed 4×4 and 5×5 grids</strong><br>
+    </p>
+
+    <p>
+      <strong>Order here:</strong><br>
+      <a href="#" target="_blank">Order page (coming soon)</a>
+    </p>
+
   </div>
+</div>
 
   <!-- Share Icons -->
   <div id="shareInline">
