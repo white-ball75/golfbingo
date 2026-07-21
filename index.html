@@ -239,126 +239,89 @@ button {
 
 <body>
 
-  
-<canvas id="confettiCanvas"></canvas>
-
-<div id="logo">
-  <span class="icon">⛳</span>
-  <span>GOLF BINGO</span>
-  <span class="icon">🏌️‍♂️</span>
-</div>
-<div id="subtitle">by White Ball Marketing</div>
-
-<div id="languageBox">
-  <strong>Language:</strong>
-  <span id="lang-en">English</span> ·
-  <span id="lang-de">Deutsch</span> ·
-  <span id="lang-sv">Svenska</span> ·
-  <span id="lang-fr">Français</span> ·
-  <span id="lang-es">Español</span>
-</div>
-
-<!-- How to Play (collapsible) -->
-<div id="howToPlayBox" class="section-box">
-  <div id="howToPlayHeader">
-    <span>📘 How to Play</span>
-    <span id="howToPlayToggle">▼</span>
+  <!-- Logo -->
+  <div id="logo">
+    <span class="icon">⛳</span>
+    <span>GOLF BINGO</span>
+    <span class="icon">🏌️‍♂️</span>
   </div>
-  <div id="howToPlayContent">
-    <p>
-      Turns every buddy golf round into a fun, competitive challenge.<br><br>
-      You decide with the buddies what you want to play for:
-      a drink at hole 19, a pot or just the fun – whatever you like.<br><br>
-      Decide if you want to play the smaller 4×4 version or the original 5×5 grid.<br><br>
-      If you register you can create your own teams and follow the results of the others (feature planned).<br><br>
-      You can reset your own grid anytime and start again with a fresh, randomly shuffled grid.
-    </p>
-    <p>
-      Tap a field whenever the described golf moment happens.<br>
-      All fields marked in a row – horizontally, vertically or diagonally – score a BINGO and win.<br>
-      Just shout it out!
-    </p>
-    <p><strong>Let’s start!</strong></p>
-  </div>
-</div>
+  <div id="subtitle">by White Ball Marketing</div>
 
-<!-- Controls -->
-<div id="controlsBox">
-  <div>
-    <strong>Grid size:</strong>
-    <label><input type="radio" name="gridSize" value="5" checked> 25 field grid (5×5)</label>
-    <label><input type="radio" name="gridSize" value="4"> 16 field grid (4×4)</label>
-  </div>
-  <div>
-    <button id="resetButton">Reset grid</button>
-  </div>
-</div>
-
-<!-- Bingo grid -->
-<div id="bingoGrid"></div>
-
-<!-- Field explanations (collapsible, alphabetical) -->
-<div id="explanationsBox" class="section-box">
-  <div id="explanationsHeader">
-    <span>🔍 Field explanations (alphabetical)</span>
-    <span id="explanationsToggle">▼</span>
-  </div>
-  <div id="explanationsContent"></div>
-</div>
- 
- <!-- Collapsible Paper Order Box -->
-<div id="paperOrderBox" class="section-box">
-  <div id="paperOrderHeader">
-    <span>📦 Paper Version – Order Options</span>
-    <span id="paperOrderToggle">▼</span>
+  <!-- Language Selector -->
+  <div id="languageBox">
+    <strong>Language:</strong>
+    <span id="lang-en">English</span> ·
+    <span id="lang-de">Deutsch</span> ·
+    <span id="lang-sv">Svenska</span> ·
+    <span id="lang-fr">Français</span> ·
+    <span id="lang-es">Español</span>
   </div>
 
-  <div id="paperOrderContent">
-    <p>You prefer playing a paper version?</p>
-
-    <p><strong>Option 1: 4×4 grid</strong><br>
-    </p>
-
-    <p><strong>Option 2: 5×5 grid</strong><br>
-    </p>
-
-    <p><strong>Option 3: Mixed 4×4 and 5×5 grids</strong><br>
-    </p>
-
-    <p>
-      <strong>Order here:</strong><br>
-      <a href="#" target="_blank">Order page (coming soon)</a>
-    </p>
+  <!-- How to Play (collapsible) -->
+  <div id="howToPlayBox" class="section-box">
+    <div id="howToPlayHeader">
+      <span>📘 How to Play</span>
+      <span id="howToPlayToggle">▼</span>
+    </div>
+    <div id="howToPlayContent"></div>
   </div>
-</div>
 
+  <!-- Controls -->
+  <div id="controlsBox">
+    <div>
+      <strong>Grid size:</strong>
+      <label><input type="radio" name="gridSize" value="5" checked> 25 field grid (5×5)</label>
+      <label><input type="radio" name="gridSize" value="4"> 16 field grid (4×4)</label>
+    </div>
+    <div>
+      <button id="resetButton">Reset grid</button>
+    </div>
+  </div>
 
-  
-<div id="shareInline">
-  <a href="mailto:?subject=GolfBingo&body=Schau%20dir%20GolfBingo%20an:%20https://white-ball75.github.io/golfbingo/" class="shareIcon" title="E-Mail">
-    <svg viewBox="0 0 24 24">
-      <path d="M12 13L2 6.5V18h20V6.5L12 13zm10-9H2l10 6 10-6z"/>
-    </svg>
-  </a>
+  <!-- Bingo Grid (ONLY ONE!) -->
+  <div id="bingoGrid"></div>
 
-  <a href="https://www.instagram.com/" target="_blank" class="shareIcon" title="Instagram">
-    <svg viewBox="0 0 24 24">
-      <path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm5 5.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm5.2-2.3a1.2 1.2 0 1 1-1.2 1.2 1.2 1.2 0 0 1 1.2-1.2z"/>
-    </svg>
-  </a>
+  <!-- Field explanations (collapsible) -->
+  <div id="explanationsBox" class="section-box">
+    <div id="explanationsHeader">
+      <span>🔍 Field explanations (alphabetical)</span>
+      <span id="explanationsToggle">▼</span>
+    </div>
+    <div id="explanationsContent"></div>
+  </div>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https://white-ball75.github.io/golfbingo/" target="_blank" class="shareIcon" title="Facebook">
-    <svg viewBox="0 0 24 24">
-      <path d="M13 3h4V0h-4c-3.3 0-6 2.7-6 6v3H4v4h3v11h4V13h3.1l.9-4H11V6c0-1.1.9-2 2-2z"/>
-    </svg>
-  </a>
+  <!-- Paper Order (collapsible) -->
+  <div id="paperOrderBox" class="section-box">
+    <div id="paperOrderHeader">
+      <span>📦 Paper Version – Order Options</span>
+      <span id="paperOrderToggle">▼</span>
+    </div>
+    <div id="paperOrderContent"></div>
+  </div>
 
-  <a href="https://wa.me/?text=Schau%20dir%20GolfBingo%20an:%20https://white-ball75.github.io/golfbingo/" target="_blank" class="shareIcon" title="WhatsApp">
-    <svg viewBox="0 0 24 24">
-      <path d="M12 2A10 10 0 0 0 2 12c0 1.8.5 3.5 1.4 5L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.3-1.3l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-5.6c-.2-.1-1.3-.6-1.5-.7-.2-.1-.4-.1-.6.1-.2.2-.7.7-.8.9-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.3.3-.4.1-.1.1-.2.2-.3.1-.1.1-.2.2-.3.1-.1.1-.2.2-.3.1-.1.1-.2.1-.3 0-.1 0-.2-.1-.3-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3.9 2.5c.1.2 1.6 2.5 3.9 3.5 2.3 1 2.3.7 2.7.7.4 0 1.3-.5 1.5-1 .2-.5.2-.9.1-1-.1-.1-.2-.2-.4-.3z"/>
-    </svg>
-  </a>
-</div>
+  <!-- Share Icons -->
+  <div id="shareInline">
+    <a href="mailto:?subject=GolfBingo&body=Schau%20dir%20GolfBingo%20an:%20https://white-ball75.github.io/golfbingo/" class="shareIcon" title="E-Mail">
+      <svg viewBox="0 0 24 24"><path d="M12 13L2 6.5V18h20V6.5L12 13zm10-9H2l10 6 10-6z"/></svg>
+    </a>
+
+    <a href="https://www.instagram.com/" target="_blank" class="shareIcon" title="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm5 5.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm5.2-2.3a1.2 1.2 0 1 1-1.2 1.2 1.2 1.2 0 0 1 1.2-1.2z"/></svg>
+    </a>
+
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://white-ball75.github.io/golfbingo/" target="_blank" class="shareIcon" title="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M13 3h4V0h-4c-3.3 0-6 2.7-6 6v3H4v4h3v11h4V13h3.1l.9-4H11V6c0-1.1.9-2 2-2z"/></svg>
+    </a>
+
+    <a href="https://wa.me/?text=Schau%20dir%20GolfBingo%20an:%20https://white-ball75.github.io/golfbingo/" target="_blank" class="shareIcon" title="WhatsApp">
+      <svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 1.8.5 3.5 1.4 5L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.3-1.3l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-5.6c-.2-.1-1.3-.6-1.5-.7-.2-.1-.4-.1-.6.1-.2.2-.7.7-.8.9-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.3.3-.4.1-.1.1-.2.2-.3.1-.1.1-.2.2-.3.1-.1.1-.2.1-.3 0-.1 0-.2-.1-.3-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3.9 2.5c.1.2 1.6 2.5 3.9 3.5 2.3 1 2.3.7 2.7.7.4 0 1.3-.5 1.5-1 .2-.5.2-.9.1-1-.1-.1-.2-.2-.4-.3z"/></svg>
+    </a>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+</body>
 
   
 <script>
