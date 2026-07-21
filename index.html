@@ -645,12 +645,51 @@ const descriptions_es = {
   "Woody": "Golpe contra un árbol."
 };
 
+const paperOrder_en = {
+  title: "📦 Paper Version – Order Options",
+  intro: "You prefer playing a paper version?",
+  option1: "Option 1: 4×4 grid – Quantities: 20, 50, 100 ",
+  option2: "Option 2: 5×5 grid – Quantities: 20 , 50, 100",
+  option3: "Option 3: Mixed 4×4 and 5×5 grids – Quantities: 20, 50, 100",
+  orderHere: "Order here:",
+};
+
+  const paperOrder_de = {
+  title: "📦 Papier-Version – Bestelloptionen",
+  intro: "Du bevorzugst eine Papier-Version?",
+  option1: "Option 1: 4×4‑Grid – Mengen: 20, 50, 100",
+  option2: "Option 2: 5×5‑Grid – Mengen: 20, 50, 100",
+  option3: "Option 3: Gemischte 4×4‑ und 5×5‑Grids – Mengen: 20, 50, 100",
+  orderHere: "Hier bestellen:",
+};
+
+ const paperOrder_sv = {
+  title: "📦 Pappersversion – Beställningsalternativ",
+  intro: "Föredrar du en pappersversion?",
+  option1: "Alternativ 1: 4×4‑rutnät – Antal: 20, 50, 100",
+  option2: "Alternativ 2: 5×5‑rutnät – Antal: 20, 50, 100",
+  option3: "Alternativ 3: Blandade 4×4‑ och 5×5‑rutnät – Antal: 20, 50, 100 ",
+  orderHere: "Beställ här:",
+};
+
+const paperOrder_fr = {
+  title: "📦 Version papier – Options de commande",
+  intro: "Vous préférez une version papier ?",
+  option1: "Option 1 : grille 4×4 – Quantités : 20, 50, 100",
+  option2: "Option 2 : grille 5×5 – Quantités : 20, 50, 100",
+  option3: "Option 3 : grilles mixtes 4×4 et 5×5 – Quantités : 20, 50, 100",
+  orderHere: "Commander ici :",
+};
 
 
-
-
-
-
+  const paperOrder_es = {
+  title: "📦 Versión en papel – Opciones de pedido",
+  intro: "¿Prefieres una versión en papel?",
+  option1: "Opción 1: cuadrícula 4×4 – Cantidades: 20, 50, 100",
+  option2: "Opción 2: cuadrícula 5×5 – Cantidades: 20, 50, 100",
+  option3: "Opción 3: cuadrículas mixtas 4×4 y 5×5 – Cantidades: 20, 50, 100",
+  orderHere: "Pedir aquí:",
+};
 
 
   
@@ -669,6 +708,47 @@ function applyDescriptionLanguage(lang) {
     default:   dict = descriptions_en;
   }
 
+/* =========================
+   Paper Order Language Switcher
+   ========================= */
+
+function applyPaperOrderLanguage(lang) {
+  let dict;
+
+  switch (lang) {
+    case "de": dict = paperOrder_de; break;
+    case "sv": dict = paperOrder_sv; break;
+    case "fr": dict = paperOrder_fr; break;
+    case "es": dict = paperOrder_es; break;
+    default:   dict = paperOrder_en;
+  }
+
+  document.querySelector("#paperOrderHeader span").innerHTML = dict.title;
+
+  document.getElementById("paperOrderContent").innerHTML = `
+    <p>${dict.intro}</p>
+    <p>${dict.option1}</p>
+    <p>${dict.option2}</p>
+    <p>${dict.option3}</p>
+    <p><strong>${dict.orderHere}</strong><br>
+      <a href="#" target="_blank">Order page (coming soon)</a>
+    </p>
+    <p>${dict.shipping}</p>
+    <p><strong>${dict.specsTitle}</strong><br>${dict.specs}</p>
+  `;
+}
+
+/* Trigger update */
+document.getElementById("languageSelect").addEventListener("change", (e) => {
+  applyPaperOrderLanguage(e.target.value);
+});
+
+/* Initial load */
+applyPaperOrderLanguage("en");
+
+
+
+  
   const container = document.getElementById("explanationsContent");
 
   const entries = Object.entries(dict).sort((a, b) =>
