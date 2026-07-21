@@ -204,59 +204,34 @@ button {
   font-size: 13px;
 }
 
-  /* Share Box */
-#shareBox {
-  width: 95%;
-  max-width: 700px;
-  margin: 20px auto;
-  background: #ffffff;
-  border-radius: 12px;
-  border: 2px solid #66bb6a;
-  box-shadow: 0 0 10px rgba(0,0,0,0.08);
-  overflow: hidden;
-}
-
-#shareHeader {
-  background: #e8f5e9;
-  padding: 14px;
-  font-size: 18px;
-  color: #2e7d32;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-#shareToggle {
-  font-size: 18px;
-  transition: transform 0.3s ease;
-}
-
-#shareContent {
-  padding: 16px;
-  font-size: 15px;
-  line-height: 1.5;
-  display: none;
-}
-
-#shareBox.open #shareContent {
-  display: block;
-}
-
-#shareBox.open #shareToggle {
-  transform: rotate(180deg);
-}
-
-.shareLink {
-  display: block;
-  margin: 10px 0;
-  font-size: 17px;
-  text-decoration: none;
-  color: #2e7d32;
-
 #languageBox span:hover {
   text-decoration: underline;
 }
+
+  #shareInline {
+  text-align: center;
+  margin: 30px 0;
+}
+
+#shareInline .shareIcon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  margin: 0 12px;
+}
+
+#shareInline .shareIcon svg {
+  width: 100%;
+  height: 100%;
+  fill: #2e7d32;
+  transition: transform 0.2s ease, fill 0.2s ease;
+}
+
+#shareInline .shareIcon:hover svg {
+  transform: scale(1.25);
+  fill: #43a047;
+}
+  
 </style>
 </head>
 
@@ -356,27 +331,30 @@ button {
   </div>
 </div>
 
-<div id="shareBox" class="section-box">
-  <div id="shareHeader">
-    <span>📣 Weiterempfehlen</span>
-    <span id="shareToggle">▼</span>
-  </div>
+<div id="shareInline">
+  <a href="mailto:?subject=GolfBingo&body=Schau%20dir%20GolfBingo%20an:%20https://white-ball75.github.io/golfbingo/" class="shareIcon" title="E-Mail">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 13L2 6.5V18h20V6.5L12 13zm10-9H2l10 6 10-6z"/>
+    </svg>
+  </a>
 
-  <div id="shareContent">
-    <p>Teile GolfBingo mit deinen Freunden:</p>
+  <a href="https://www.instagram.com/" target="_blank" class="shareIcon" title="Instagram">
+    <svg viewBox="0 0 24 24">
+      <path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm5 5.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm5.2-2.3a1.2 1.2 0 1 1-1.2 1.2 1.2 1.2 0 0 1 1.2-1.2z"/>
+    </svg>
+  </a>
 
-    <a class="shareLink" href="mailto:?subject=GolfBingo&body=Schau%20dir%20GolfBingo%20an:%20https://white-ball75.github.io/golfbingo/" target="_blank">
-      📧 E-Mail
-    </a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https://white-ball75.github.io/golfbingo/" target="_blank" class="shareIcon" title="Facebook">
+    <svg viewBox="0 0 24 24">
+      <path d="M13 3h4V0h-4c-3.3 0-6 2.7-6 6v3H4v4h3v11h4V13h3.1l.9-4H11V6c0-1.1.9-2 2-2z"/>
+    </svg>
+  </a>
 
-    <a class="shareLink" href="https://www.instagram.com/" target="_blank">
-      📸 Instagram
-    </a>
-
-    <a class="shareLink" href="https://www.facebook.com/sharer/sharer.php?u=https://white-ball75.github.io/golfbingo/" target="_blank">
-      👍 Facebook
-    </a>
-  </div>
+  <a href="https://wa.me/?text=Schau%20dir%20GolfBingo%20an:%20https://white-ball75.github.io/golfbingo/" target="_blank" class="shareIcon" title="WhatsApp">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 2A10 10 0 0 0 2 12c0 1.8.5 3.5 1.4 5L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.3-1.3l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-5.6c-.2-.1-1.3-.6-1.5-.7-.2-.1-.4-.1-.6.1-.2.2-.7.7-.8.9-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.3.3-.4.1-.1.1-.2.2-.3.1-.1.1-.2.2-.3.1-.1.1-.2.2-.3.1-.1.1-.2.1-.3 0-.1 0-.2-.1-.3-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3.9 2.5c.1.2 1.6 2.5 3.9 3.5 2.3 1 2.3.7 2.7.7.4 0 1.3-.5 1.5-1 .2-.5.2-.9.1-1-.1-.1-.2-.2-.4-.3z"/>
+    </svg>
+  </a>
 </div>
 
   
@@ -700,10 +678,6 @@ function applyLanguage(lang) {
 
   document.querySelector("#paperOrderHeader span").innerHTML = t.paperTitle;
 
-  * Collapsible Share Box */
-document.getElementById("shareHeader").onclick = () =>
-  document.getElementById("shareBox").classList.toggle("open");
-}
 
 
 /* =========================
