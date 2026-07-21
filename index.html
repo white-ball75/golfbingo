@@ -330,6 +330,111 @@ button {
 
 
 <script>
+
+
+/* =========================
+   Language Dictionary
+   ========================= */
+const translations = {
+  en: {
+    howToPlayTitle: "📘 How to Play",
+    howToPlayText: `
+      Turns every buddy golf round into a fun, competitive challenge.<br><br>
+      You decide with the buddies what you want to play for:
+      a drink at hole 19, a pot or just the fun – whatever you like.<br><br>
+      Decide if you want to play the smaller 4×4 version or the original 5×5 grid.<br><br>
+      If you register you can create your own teams and follow the results of the others (feature planned).<br><br>
+      You can reset your own grid anytime and start again with a fresh, randomly shuffled grid.<br><br>
+      Tap a field whenever the described golf moment happens.<br>
+      All fields marked in a row – horizontally, vertically or diagonally – score a BINGO and win.<br>
+      Just shout it out!<br><br>
+      <strong>Let’s start!</strong>
+    `,
+    explanationsTitle: "🔍 Field explanations (alphabetical)",
+    prizeTitle: "🎁 Bingo prize ideas",
+    paperTitle: "📦 Paper Version – Order Options"
+  },
+
+  de: {
+    howToPlayTitle: "📘 Spielanleitung",
+    howToPlayText: `
+      Macht jede Golfrunde mit Freunden zu einer lustigen, kleinen Challenge.<br><br>
+      Ihr entscheidet gemeinsam, worum ihr spielt:
+      ein Getränk an Loch 19, einen Pot oder einfach nur den Spaß – ganz wie ihr wollt.<br><br>
+      Wählt, ob ihr die kleinere 4×4-Version oder das originale 5×5‑Grid spielen möchtet.<br><br>
+      Wenn ihr euch registriert, könnt ihr eigene Gruppen erstellen und die Ergebnisse der anderen verfolgen (Feature geplant).<br><br>
+      Ihr könnt euer eigenes Grid jederzeit zurücksetzen und mit einem neuen, zufällig gemischten Grid neu starten.<br><br>
+      Tippt ein Feld an, sobald der beschriebene Golfmoment passiert.<br>
+      Alle markierten Felder in einer Reihe – horizontal, vertikal oder diagonal – ergeben ein BINGO und gewinnen.<br>
+      Einfach laut rufen!<br><br>
+      <strong>Los geht’s!</strong>
+    `,
+    explanationsTitle: "🔍 Felderklärungen (alphabetisch)",
+    prizeTitle: "🎁 Bingo‑Preisideen",
+    paperTitle: "📦 Papier-Version – Bestelloptionen"
+  },
+
+  sv: {
+    howToPlayTitle: "📘 Så spelar du",
+    howToPlayText: `
+      Gör varje golfrunda med vänner till en rolig och tävlingsinriktad utmaning.<br><br>
+      Ni bestämmer själva vad ni spelar om:
+      en drink vid hål 19, en pott eller bara för skojs skull – helt upp till er.<br><br>
+      Välj om ni vill spela den mindre 4×4‑versionen eller det klassiska 5×5‑rutnätet.<br><br>
+      Om ni registrerar er kan ni skapa egna grupper och följa varandras resultat (funktion planerad).<br><br>
+      Ni kan när som helst återställa ert eget rutnät och börja om med ett nytt, slumpmässigt blandat rutnät.<br><br>
+      Tryck på en ruta när det beskrivna golfögonblicket inträffar.<br>
+      Alla markerade rutor i rad – horisontellt, vertikalt eller diagonalt – ger BINGO och vinst.<br>
+      Bara ropa ut det!<br><br>
+      <strong>Nu kör vi!</strong>
+    `,
+    explanationsTitle: "🔍 Fältförklaringar (alfabetiskt)",
+    prizeTitle: "🎁 Bingo‑prisidéer",
+    paperTitle: "📦 Pappersversion – Beställningsalternativ"
+  },
+
+  fr: {
+    howToPlayTitle: "📘 Comment jouer",
+    howToPlayText: `
+      Transformez chaque partie de golf entre amis en un défi amusant et compétitif.<br><br>
+      Vous décidez ensemble ce que vous mettez en jeu :
+      une boisson au trou 19, une cagnotte ou simplement le plaisir de jouer – comme vous voulez.<br><br>
+      Choisissez si vous préférez la version 4×4 ou la grille originale 5×5.<br><br>
+      En vous inscrivant, vous pourrez créer vos propres groupes et suivre les résultats des autres (fonction prévue).<br><br>
+      Vous pouvez réinitialiser votre grille à tout moment et recommencer avec une nouvelle grille mélangée aléatoirement.<br><br>
+      Touchez une case dès que le moment de golf décrit se produit.<br>
+      Toutes les cases marquées en ligne – horizontalement, verticalement ou diagonalement – donnent un BINGO et une victoire.<br>
+      Il suffit de le crier !<br><br>
+      <strong>C’est parti !</strong>
+    `,
+    explanationsTitle: "🔍 Explications des cases (ordre alphabétique)",
+    prizeTitle: "🎁 Idées de prix Bingo",
+    paperTitle: "📦 Version papier – Options de commande"
+  },
+
+  es: {
+    howToPlayTitle: "📘 Cómo jugar",
+    howToPlayText: `
+      Convierte cada ronda de golf con amigos en un desafío divertido y competitivo.<br><br>
+      Ustedes deciden juntos por qué quieren jugar:
+      una bebida en el hoyo 19, un bote o simplemente por diversión – como prefieran.<br><br>
+      Elijan si quieren jugar la versión pequeña de 4×4 o la cuadrícula original de 5×5.<br><br>
+      Si se registran, podrán crear sus propios grupos y seguir los resultados de los demás (función prevista).<br><br>
+      Pueden reiniciar su propia cuadrícula en cualquier momento y comenzar de nuevo con una cuadrícula mezclada aleatoriamente.<br><br>
+      Toquen una casilla cuando ocurra el momento de golf descrito.<br>
+      Todas las casillas marcadas en una fila – horizontal, vertical o diagonal – dan BINGO y ganan.<br>
+      ¡Solo grítenlo!<br><br>
+      <strong>¡Vamos!</strong>
+    `,
+    explanationsTitle: "🔍 Explicaciones de las casillas (alfabético)",
+    prizeTitle: "🎁 Ideas de premios Bingo",
+    paperTitle: "📦 Versión en papel – Opciones de pedido"
+  }
+};
+
+
+
+  
 /* =========================
    Bingo Fields + Descriptions
    ========================= */
@@ -370,7 +475,7 @@ const negativeFields = [
   "Woody"
 ];
 
-const descriptions = {
+const descriptions_en = {
   ">6-footer sunk": "Holed a putt from more than 6 feet / 1.80 m away.",
   "Long and strong down the middle – Drive": "A perfect tee shot with the driver.",
   "GIR Par 3": "Green in regulation on a Par 3.",
@@ -404,6 +509,189 @@ const descriptions = {
   "Woody": "Hitting a tree."
 };
 
+const descriptions_de = {
+  ">6-footer sunk": "Putt aus mehr als 6 Fuß / 1,80 m gelocht.",
+  "Long and strong down the middle – Drive": "Perfekter Abschlag mit dem Driver.",
+  "GIR Par 3": "Green in Regulation auf einem Par 3.",
+  "GIR Par 4": "Green in Regulation auf einem Par 4.",
+  "Par": "Schlagzahl wie auf der Scorekarte.",
+  "Bogey": "Ein Schlag über Par.",
+  "Birdie": "Ein Schlag unter Par.",
+  "Intentional draw": "Ballflug von außen nach innen – bewusst gespielt.",
+  "Intentional fade": "Ballflug von innen nach außen – bewusst gespielt.",
+  "Pitch to < 4 m to pin": "Nach dem Pitch weniger als 4 m zur Fahne.",
+  "Chip to <1 putter length to pin": "Nach dem Chip weniger als eine Putterlänge zur Fahne.",
+  "Sand save (1 Put)": "Nur ein Putt nach einem Bunkerschlag aufs Grün.",
+  "Should have used driver": "Schöner Abschlag mit Eisen/Holz, wäre mit Driver noch besser.",
+  "Lousy but useful": "Schlechter Schlag, der trotzdem gut liegt.",
+  "3‑Put": "Drei Putts auf dem Grün.",
+  "Sissy iron tee shot (Par 4/5 only)": "Angst gehabt, den Driver zu benutzen.",
+  "Slice Deluxe": "Ungewollter Slice weit weg vom Fairway.",
+  "Power Hook": "Ungewollter Hook weit weg vom Fairway.",
+  "Double Par": "Doppelte Soll‑Schlagzahl.",
+  "Still me": "Schlag war so kurz, dass du wieder dran bist.",
+  "Lady": "Abschlag kam nicht über das Damen‑Tee.",
+  "Rabbitkiller": "Extrem flacher Abschlag.",
+  "Shooter – green overhit": "Grün ungewollt überschossen.",
+  "Lip‑Out Legend": "Ball berührt den Rand, fällt aber nicht.",
+  "Ice on the ball – tee shot": "Extrem hoher Abschlag.",
+  "Off the green": "Ball rollt wieder vom Grün herunter.",
+  "Should not have used driver": "Falsche Entscheidung, den Driver zu nehmen.",
+  "1 hole – 2 penalty strokes": "Zwei Strafschläge auf einem Loch.",
+  "3 or more penalty strokes": "Drei oder mehr Strafschläge.",
+  "Water finder": "Ball im Wasser verloren.",
+  "Woody": "Ball trifft einen Baum."
+};
+
+const descriptions_sv = {
+  ">6-footer sunk": "Putt från mer än 6 fot / 1,80 m satt.",
+  "Long and strong down the middle – Drive": "Perfekt utslag med drivern.",
+  "GIR Par 3": "Green in regulation på ett par 3.",
+  "GIR Par 4": "Green in regulation på ett par 4.",
+  "Par": "Resultat enligt scorekortet.",
+  "Bogey": "Ett slag över par.",
+  "Birdie": "Ett slag under par.",
+  "Intentional draw": "Medveten bollflykt från utsidan till insidan.",
+  "Intentional fade": "Medveten bollflykt från insidan till utsidan.",
+  "Pitch to < 4 m to pin": "Inom 4 meter från flaggan efter en pitch.",
+  "Chip to <1 putter length to pin": "Inom en putterlängd efter en chip.",
+  "Sand save (1 Put)": "Endast ett putt efter ett bunkerslag på green.",
+  "Should have used driver": "Bra utslag med järn/trä, men hade varit bättre med driver.",
+  "Lousy but useful": "Dåligt slag som ändå hamnade bra.",
+  "3‑Put": "Tre puttar på green.",
+  "Sissy iron tee shot (Par 4/5 only)": "Vågade inte använda drivern.",
+  "Slice Deluxe": "Oavsiktlig slice långt bort från fairway.",
+  "Power Hook": "Oavsiktlig hook långt bort från fairway.",
+  "Double Par": "Dubbla förväntade slag.",
+  "Still me": "Slaget var så kort att det är din tur igen.",
+  "Lady": "Utslaget passerade inte damtee.",
+  "Rabbitkiller": "Extremt lågt utslag.",
+  "Shooter – green overhit": "Oavsiktligt slag över green.",
+  "Lip‑Out Legend": "Bollen nuddar kanten men faller inte i.",
+  "Ice on the ball – tee shot": "Extremt högt utslag.",
+  "Off the green": "Bollen rullar av green igen.",
+  "Should not have used driver": "Fel beslut att använda drivern.",
+  "1 hole – 2 penalty strokes": "Två pliktslag på ett hål.",
+  "3 or more penalty strokes": "Tre eller fler pliktslag.",
+  "Water finder": "Boll förlorad i vattnet.",
+  "Woody": "Bollen träffar ett träd."
+};
+
+  const descriptions_fr = {
+  ">6-footer sunk": "Putt réussi depuis plus de 6 pieds / 1,80 m.",
+  "Long and strong down the middle – Drive": "Coup de départ parfait avec le driver.",
+  "GIR Par 3": "Green atteint en régulation sur un par 3.",
+  "GIR Par 4": "Green atteint en régulation sur un par 4.",
+  "Par": "Score conforme à la carte.",
+  "Bogey": "Un coup au‑dessus du par.",
+  "Birdie": "Un coup en‑dessous du par.",
+  "Intentional draw": "Trajectoire volontaire de l’extérieur vers l’intérieur.",
+  "Intentional fade": "Trajectoire volontaire de l’intérieur vers l’extérieur.",
+  "Pitch to < 4 m to pin": "À moins de 4 m du drapeau après un pitch.",
+  "Chip to <1 putter length to pin": "À moins d’une longueur de putter après un chip.",
+  "Sand save (1 Put)": "Un seul putt après un coup de bunker sur le green.",
+  "Should have used driver": "Bon coup avec un fer/bois, mais aurait été meilleur avec le driver.",
+  "Lousy but useful": "Mauvais coup qui finit malgré tout dans une bonne position.",
+  "3‑Put": "Trois putts sur le green.",
+  "Sissy iron tee shot (Par 4/5 only)": "A eu peur d’utiliser le driver.",
+  "Slice Deluxe": "Slice involontaire très loin du fairway.",
+  "Power Hook": "Hook involontaire très loin du fairway.",
+  "Double Par": "Double du score prévu.",
+  "Still me": "Coup si court que c’est encore votre tour.",
+  "Lady": "Le coup de départ n’a pas dépassé le départ dames.",
+  "Rabbitkiller": "Coup de départ extrêmement bas.",
+  "Shooter – green overhit": "Coup involontairement trop fort, au‑delà du green.",
+  "Lip‑Out Legend": "La balle touche le bord du trou mais ne tombe pas.",
+  "Ice on the ball – tee shot": "Coup de départ extrêmement haut.",
+  "Off the green": "La balle roule à nouveau hors du green.",
+  "Should not have used driver": "Mauvais choix d’utiliser le driver.",
+  "1 hole – 2 penalty strokes": "Deux coups de pénalité sur un trou.",
+  "3 or more penalty strokes": "Trois coups de pénalité ou plus.",
+  "Water finder": "Balle perdue dans l’eau.",
+  "Woody": "Balle envoyée dans un arbre."
+};
+
+const descriptions_es = {
+  ">6-footer sunk": "Putt embocado desde más de 6 pies / 1,80 m.",
+  "Long and strong down the middle – Drive": "Golpe de salida perfecto con el driver.",
+  "GIR Par 3": "Green en regulación en un par 3.",
+  "GIR Par 4": "Green en regulación en un par 4.",
+  "Par": "Resultado según la tarjeta.",
+  "Bogey": "Un golpe sobre el par.",
+  "Birdie": "Un golpe bajo el par.",
+  "Intentional draw": "Trayectoria intencionada de fuera hacia dentro.",
+  "Intentional fade": "Trayectoria intencionada de dentro hacia fuera.",
+  "Pitch to < 4 m to pin": "A menos de 4 m de la bandera tras un pitch.",
+  "Chip to <1 putter length to pin": "A menos de una longitud de putter tras un chip.",
+  "Sand save (1 Put)": "Solo un putt después de un golpe de bunker al green.",
+  "Should have used driver": "Buen golpe con hierro/madera, pero habría sido mejor con driver.",
+  "Lousy but useful": "Golpe malo que aun así termina en buena posición.",
+  "3‑Put": "Tres putts en el green.",
+  "Sissy iron tee shot (Par 4/5 only)": "Miedo de usar el driver.",
+  "Slice Deluxe": "Slice involuntario muy lejos del fairway.",
+  "Power Hook": "Hook involuntario muy lejos del fairway.",
+  "Double Par": "Doble del resultado esperado.",
+  "Still me": "Golpe tan corto que te toca otra vez.",
+  "Lady": "Golpe de salida que no pasó el tee de damas.",
+  "Rabbitkiller": "Golpe de salida extremadamente bajo.",
+  "Shooter – green overhit": "Golpe demasiado fuerte, más allá del green.",
+  "Lip‑Out Legend": "La bola toca el borde del hoyo pero no cae.",
+  "Ice on the ball – tee shot": "Golpe de salida extremadamente alto.",
+  "Off the green": "La bola vuelve a salir del green.",
+  "Should not have used driver": "Mala decisión usar el driver.",
+  "1 hole – 2 penalty strokes": "Dos golpes de penalización en un hoyo.",
+  "3 or more penalty strokes": "Tres o más golpes de penalización.",
+  "Water finder": "Bola perdida en el agua.",
+  "Woody": "Golpe contra un árbol."
+};
+
+
+
+
+
+
+
+
+
+  
+/* =========================
+   Description Language Switcher
+   ========================= */
+
+function applyDescriptionLanguage(lang) {
+  let dict;
+
+  switch (lang) {
+    case "de": dict = descriptions_de; break;
+    case "sv": dict = descriptions_sv; break;
+    case "fr": dict = descriptions_fr; break;
+    case "es": dict = descriptions_es; break;
+    default:   dict = descriptions_en;
+  }
+
+  const container = document.getElementById("explanationsContent");
+
+  const entries = Object.entries(dict).sort((a, b) =>
+    a[0].localeCompare(b[0])
+  );
+
+  container.innerHTML = entries
+    .map(([field, text]) => `<p><strong>${field}:</strong> ${text}</p>`)
+    .join("");
+}
+
+/* Trigger description update when language changes */
+document.getElementById("languageSelect").addEventListener("change", (e) => {
+  applyDescriptionLanguage(e.target.value);
+});
+
+/* Initial load */
+applyDescriptionLanguage("en");
+
+
+
+
+  
 /* Balanced random mix */
 function generateBalancedFields(count) {
   const half = Math.floor(count / 2);
@@ -533,6 +821,30 @@ document.querySelectorAll("input[name='gridSize']").forEach(radio => {
 
 document.getElementById("resetButton").onclick = () => loadBingoGrid();
 
+/* =========================
+   Language Switcher Logic
+   ========================= */
+
+function applyLanguage(lang) {
+  const t = translations[lang] || translations["en"];
+
+  document.querySelector("#howToPlayHeader span").innerHTML = t.howToPlayTitle;
+  document.getElementById("howToPlayContent").innerHTML = t.howToPlayText;
+
+  document.querySelector("#explanationsHeader span").innerHTML = t.explanationsTitle;
+
+  document.querySelector("#prizeBox h3").innerHTML = t.prizeTitle;
+
+  document.querySelector("#paperOrderHeader span").innerHTML = t.paperTitle;
+}
+
+document.getElementById("languageSelect").onchange = (e) => {
+  applyLanguage(e.target.value);
+};
+
+applyLanguage("en");
+
+  
 /* Init */
 loadBingoGrid();
 loadExplanations();
