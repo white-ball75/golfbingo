@@ -154,26 +154,6 @@ button {
   pointer-events: none;
 }
 
-/* Prize box */
-#prizeBox {
-  width: 95%;
-  max-width: 700px;
-  margin: 16px auto 24px;
-  background: #ffffff;
-  border-radius: 12px;
-  border: 2px solid #66bb6a;
-  box-shadow: 0 0 10px rgba(0,0,0,0.08);
-  padding: 16px;
-  text-align: left;
-  font-size: 15px;
-  line-height: 1.6;
-}
-#prizeBox h3 {
-  margin-top: 0;
-  color: #2e7d32;
-  text-align: center;
-}
-
 /* Collapsible Paper Order Box */
 #paperOrderBox {
   width: 95%;
@@ -224,6 +204,55 @@ button {
   font-size: 13px;
 }
 
+  /* Share Box */
+#shareBox {
+  width: 95%;
+  max-width: 700px;
+  margin: 20px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #66bb6a;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+#shareHeader {
+  background: #e8f5e9;
+  padding: 14px;
+  font-size: 18px;
+  color: #2e7d32;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+#shareToggle {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+#shareContent {
+  padding: 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  display: none;
+}
+
+#shareBox.open #shareContent {
+  display: block;
+}
+
+#shareBox.open #shareToggle {
+  transform: rotate(180deg);
+}
+
+.shareLink {
+  display: block;
+  margin: 10px 0;
+  font-size: 17px;
+  text-decoration: none;
+  color: #2e7d32;
 
 #languageBox span:hover {
   text-decoration: underline;
@@ -252,7 +281,7 @@ button {
 </div>
 
 <!-- How to Play (collapsible) -->
-<div id="howToPlayBox" class="section-box open">
+<div id="howToPlayBox" class="section-box">
   <div id="howToPlayHeader">
     <span>📘 How to Play</span>
     <span id="howToPlayToggle">▼</span>
@@ -298,18 +327,6 @@ button {
   </div>
   <div id="explanationsContent"></div>
 </div>
-
-<!-- Prize suggestions -->
-<div id="prizeBox">
-  <h3>Bingo prize ideas</h3>
-  <ul>
-    <li>Pot system (everyone pays in, winner takes the pot)</li>
-    <li>Drink at the clubhouse (paid by the loser)</li>
-    <li>Bingo mascot (small traveling trophy)</li>
-    <li>Honor point within the group</li>
-    <li>Surprise prize chosen by the group</li>
-  </ul>
-  </div>
  
  <!-- Collapsible Paper Order Box -->
 <div id="paperOrderBox" class="section-box">
@@ -335,10 +352,34 @@ button {
       <a href="#" target="_blank">Order page (coming soon)</a>
     </p>
 
+    
   </div>
 </div>
 
+<div id="shareBox" class="section-box">
+  <div id="shareHeader">
+    <span>📣 Weiterempfehlen</span>
+    <span id="shareToggle">▼</span>
+  </div>
 
+  <div id="shareContent">
+    <p>Teile GolfBingo mit deinen Freunden:</p>
+
+    <a class="shareLink" href="mailto:?subject=GolfBingo&body=Schau%20dir%20GolfBingo%20an:%20https://white-ball75.github.io/golfbingo/" target="_blank">
+      📧 E-Mail
+    </a>
+
+    <a class="shareLink" href="https://www.instagram.com/" target="_blank">
+      📸 Instagram
+    </a>
+
+    <a class="shareLink" href="https://www.facebook.com/sharer/sharer.php?u=https://white-ball75.github.io/golfbingo/" target="_blank">
+      👍 Facebook
+    </a>
+  </div>
+</div>
+
+  
 <script>
 
 /* =========================
@@ -657,9 +698,11 @@ function applyLanguage(lang) {
 
   document.querySelector("#explanationsHeader span").innerHTML = t.explanationsTitle;
 
-  document.querySelector("#prizeBox h3").innerHTML = t.prizeTitle;
-
   document.querySelector("#paperOrderHeader span").innerHTML = t.paperTitle;
+
+  * Collapsible Share Box */
+document.getElementById("shareHeader").onclick = () =>
+  document.getElementById("shareBox").classList.toggle("open");
 }
 
 
