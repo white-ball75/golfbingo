@@ -223,6 +223,11 @@ button {
   margin-top: 8px;
   font-size: 13px;
 }
+
+
+#languageBox span:hover {
+  text-decoration: underline;
+}
 </style>
 </head>
 
@@ -238,7 +243,12 @@ button {
 <div id="subtitle">by White Ball Marketing</div>
 
 <div id="languageBox">
-  Language (coming soon): English · Deutsch · Svenska · Français · Español
+  <strong>Language:</strong>
+  <span id="lang-en">English</span> ·
+  <span id="lang-de">Deutsch</span> ·
+  <span id="lang-sv">Svenska</span> ·
+  <span id="lang-fr">Français</span> ·
+  <span id="lang-es">Español</span>
 </div>
 
 <!-- How to Play (collapsible) -->
@@ -809,6 +819,39 @@ document.getElementById("explanationsHeader").onclick = () =>
 document.getElementById("paperOrderHeader").onclick = () =>
   document.getElementById("paperOrderBox").classList.toggle("open");
 
+  /* =========================
+   LANGUAGE BUTTONS
+   ========================= */
+
+document.getElementById("lang-en").onclick = () => {
+  applyLanguage("en");
+  applyDescriptionLanguage("en");
+  applyPaperOrderLanguage("en");
+};
+
+document.getElementById("lang-de").onclick = () => {
+  applyLanguage("de");
+  applyDescriptionLanguage("de");
+  applyPaperOrderLanguage("de");
+};
+
+document.getElementById("lang-sv").onclick = () => {
+  applyLanguage("sv");
+  applyDescriptionLanguage("sv");
+  applyPaperOrderLanguage("sv");
+};
+
+document.getElementById("lang-fr").onclick = () => {
+  applyLanguage("fr");
+  applyDescriptionLanguage("fr");
+  applyPaperOrderLanguage("fr");
+};
+
+document.getElementById("lang-es").onclick = () => {
+  applyLanguage("es");
+  applyDescriptionLanguage("es");
+  applyPaperOrderLanguage("es");
+};
 
 /* =========================
    INITIALIZATION
