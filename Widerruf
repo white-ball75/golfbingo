@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Widerruf – Golf Bingo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="index.html">Start</a></li>
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+        <li><a href="widerruf.html">Widerruf</a></li>
+        <li><a href="agb.html">AGB</a></li>
+        <li><a href="versand-zahlung.html">Versand & Zahlung</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+    </ul>
+</nav>
+
+<h1>Widerrufsbelehrung</h1>
+
+<p>Du hast das Recht, binnen 14 Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen...</p>
+
+<h2>Muster-Widerrufsformular</h2>
+<p>Hiermit widerrufe ich den Vertrag über den Kauf der folgenden Ware...</p>
+
+</body>
+</html>
