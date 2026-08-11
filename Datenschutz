@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Datenschutz – Golf Bingo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="index.html">Start</a></li>
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+        <li><a href="widerruf.html">Widerruf</a></li>
+        <li><a href="agb.html">AGB</a></li>
+        <li><a href="versand-zahlung.html">Versand & Zahlung</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+    </ul>
+</nav>
+
+<h1>Datenschutzerklärung</h1>
+
+<p><strong>Verantwortlicher:</strong><br>
+Golf Bingo / White Ball Marketing<br>
+Sven-Christian Feist<br>
+Tannenstr. 24e<br>
+40476 Düsseldorf<br>
+info@golf-bingo.com</p>
+
+<p>Wir verarbeiten personenbezogene Daten gemäß DSGVO...</p>
+
+</body>
+</html>
